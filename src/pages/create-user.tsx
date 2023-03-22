@@ -3,9 +3,10 @@ import db from "../firebase";
 import { useState } from "react";
 import axios from "axios";
 import styles from "../style/create-user.module.scss"
-
+import { useRouter } from "next/router";
 
 export default function CreateUser() {
+    const router = useRouter();
   const [name, setName] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [address, setAddress] = useState("");
@@ -28,8 +29,9 @@ export default function CreateUser() {
   };
 
   const CreateUser = async (e) => {
-    console.log("送信");
+    // console.log("送信");
     e.preventDefault();
+setErrormessage("")
 
     if(!name){
         setErrormessage('※名前を入力してください')
@@ -59,7 +61,9 @@ export default function CreateUser() {
             plan,
             startDate
           });
+          router.push("/");
         };
+
     }
 
    
