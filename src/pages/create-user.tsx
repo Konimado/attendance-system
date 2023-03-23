@@ -17,6 +17,7 @@ export default function CreateUser() {
   const [plan, setPlan] = useState("");
   const [startDate, setstartDate] = useState("");
   const [errormessage,setErrormessage]=useState("")
+  const [validate,setValidate]=use
 
   console.log(typeof birth);
 
@@ -31,23 +32,30 @@ export default function CreateUser() {
   const CreateUser = async (e) => {
     // console.log("送信");
     e.preventDefault();
-setErrormessage("")
+  setErrormessage("")
 
     if(!name){
         setErrormessage('※名前を入力してください')
-    }else if(!address){
+
+    }
+     if(!address){
         setErrormessage('※住所を入力してください')
-    }else if(!birth.match(/\d{4}\/\d{2}\/\d{2}/)){
+    }
+     if(!birth.match(/\d{4}\/\d{2}\/\d{2}/)){
         setErrormessage('※生年月日を正しく入力してください')
-    }else if (!phoneNumber.match(/^0[-0-9]{9,12}$/)){
+    }
+     if (!phoneNumber.match(/^0[-0-9]{9,12}$/)){
         setErrormessage('※電話番号を正しく入力してください')
-    }else if(!mailAddress.match(/^[a-zA-Z0-9_+-]+(.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/)){
+    }if(!mailAddress.match(/^[a-zA-Z0-9_+-]+(.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/)){
         setErrormessage('※メールアドレスを正しく入力してください')
-    }else if(!gender){
+    }
+    if(!gender){
         setErrormessage('※性別を選択してください')
-    }else if(!plan){
+    }
+    if(!plan){
         setErrormessage('プランを選択してください')
-    }else if(!startDate.match(/\d{4}\/\d{2}\/\d{2}/)){
+    }
+    if(!startDate.match(/\d{4}\/\d{2}\/\d{2}/)){
         setErrormessage('※入会日を正しく入力してください')
     }else{
         await addDoc(collection(db, "users"), {
