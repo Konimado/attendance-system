@@ -1,21 +1,21 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import React, { useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import Layout from "../components/layout";
 
-export default function ownersLogin() {
-  const [user] = useAuthState(auth);
+export default function OwnersLogin() {
+  //入力欄
   const [mailAddress, setMailAddress] = useState("");
   const [password, setPassword] = useState("");
   //エラーメッセージ
   const [errorMessage, setErrorMessage] = useState("");
 
+  //ログインボタン
   const buttonSignIn = function () {
     signInWithEmailAndPassword(auth, mailAddress, password)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        // ...
       })
       .catch((error) => {
         setErrorMessage("※メールアドレスまたはパスワードが間違っています");
@@ -23,7 +23,7 @@ export default function ownersLogin() {
   };
 
   return (
-    <>
+    <Layout>
       <div>
         <label>メールアドレス</label>
         <input
@@ -46,6 +46,6 @@ export default function ownersLogin() {
       </div>
       <p>{errorMessage}</p>
       <button onClick={buttonSignIn}>Sign in</button>
-    </>
+    </Layout>
   );
 }
