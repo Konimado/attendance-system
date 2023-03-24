@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import header from "../style/header.module.scss";
-import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
