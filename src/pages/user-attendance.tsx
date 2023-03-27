@@ -9,19 +9,22 @@ import {
   orderBy,
   Timestamp,
   updateDoc,
+  getDoc
 } from "firebase/firestore";
 import db from "../firebase";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../style/user-attendance.module.scss";
 
 export default function UserAttendance() {
+
+ 
   const [id, setId] = useState("");
 
   const [realTime, setRealTime] = useState("");
 
   const [attendanceTime, setAttendanceTime] = useState("");
 
-  console.log(attendanceTime);
+
 
   const Enter = async () => {
     const now = new Date();
@@ -34,26 +37,28 @@ export default function UserAttendance() {
     const Time = year + "/" + mon + "/" + day + "  " + hour + ":" + min + ":" + sec
     setAttendanceTime(Time);
     //状態をまず確認
-    const attendanceRef = collection(db, "users-attendance");
-    const attendanceData = query(attendanceRef, where("id", "==", "6662"));
-    console.log(attendanceData);
-    getDocs(attendanceData).then((snapShot) => {
-      // console.log(snapShot.docs.map((doc) => doc.data()));
-      // console.log(snapShot.docs.map((doc) => doc.data().exitTime));
+    const attendanceRef = doc(db, "users", id);
+    const docSnap = await getDoc(attendanceRef);
 
-      const entertime = snapShot.docs.map((doc) => doc.data().enterTime);
-    });
-    await addDoc(collection(db, "users-attendance"), {
-      id: id,
-      enterTime: Timestamp.fromDate(new Date()),
-      exitTime: "",
-    });
-    const users_status = doc(db, "users", "0pwT684Gb50bHWvKFXtg");
-    await updateDoc(users_status, { status: true });
+if (docSnap.exists()) {
+  console.log("Document data:", docSnap.data());
+} else {
+  // doc.data() will be undefined in this case
+  console.log("No such document!");
+}
+
+    // await addDoc(collection(db, "users-attendance"), {
+    //   id: id,
+    //   enterTime: Timestamp.fromDate(new Date()),
+    //   exitTime: "",
+    // });
+    // //status:trueを保存
+    // const users_status = doc(db, "users", "0pwT684Gb50bHWvKFXtg");
+    // await updateDoc(users_status, { status: true });
   };
 
   const Exit = async () => {
-    const time = new Date();
+
 
     await addDoc(collection(db, "users-attendance"), {
       id: id,
@@ -66,10 +71,16 @@ export default function UserAttendance() {
     setRealTime(new Date().toLocaleString());
   }, 1000);
 
+
+
+  
+
+
   return (
     <>
       <div className={styles.contents}>
         <div className={styles.user_number}>
+          {/* {user.map((u)=>u)} */}
           <label htmlFor="">
             会員番号
             <div>
