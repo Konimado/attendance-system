@@ -22,8 +22,8 @@ export default function Header() {
       <div className={header.site}>
         <Link href="/">
           <Image
-            src={"next.svg"}
-            width={100}
+            src={"/images/logo.png"}
+            width={200}
             height={50}
             alt={"タイトルロゴ"}
             priority
@@ -31,21 +31,31 @@ export default function Header() {
         </Link>
         <nav className="nav">
           <ul className={header.nav__wrapper}>
-            <li className={header.nav__item}>
-              <Link href="/">会員一覧</Link>
-            </li>
-            <li className={header.nav__item}>
-              <Link href="/">グラフ管理</Link>
-            </li>
-            <li className={header.nav__item}>
-              {user ? (
-                <Link href="/" onClick={buttonSignOut}>
-                  ログアウト
-                </Link>
-              ) : (
+            {user ? (
+              <>
+                <li className={header.nav__item}>
+                  <Link href="/create-user">会員登録</Link>
+                </li>
+                <li className={header.nav__item}>
+                  <Link href="/member-attendance">会員打刻</Link>
+                </li>
+                <li className={header.nav__item}>
+                  <Link href="/member-list">会員一覧</Link>
+                </li>
+                <li className={header.nav__item}>
+                  <Link href="/graph-management">グラフ管理</Link>
+                </li>
+                <li className={header.nav__item}>
+                  <Link href="/" onClick={buttonSignOut}>
+                    ログアウト
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <li className={header.nav__item}>
                 <Link href="/ownersLogin">ログイン</Link>
-              )}
-            </li>
+              </li>
+            )}
           </ul>
         </nav>
       </div>
