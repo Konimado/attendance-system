@@ -2,18 +2,14 @@ import {
   addDoc,
   collection,
   doc,
-  setDoc,
-  getDocs,
-  query,
-  where,
-  orderBy,
   Timestamp,
   updateDoc,
   getDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import { use, useState } from "react";
+import { useState } from "react";
 import styles from "../style/user-attendance.module.scss";
+import Layout from "@/components/layout";
 
 export default function UserAttendance() {
   const [id, setId] = useState("");
@@ -22,13 +18,10 @@ export default function UserAttendance() {
 
   const [attendanceTime, setAttendanceTime] = useState("");
   const [errormessage, setErrormessage] = useState("");
-  const [notice,setNotice]=useState("")
+  const [notice, setNotice] = useState("");
+  const [timenotice,setTimenotice]=useState("")
 
-  const Enter = async () => {
-    if(!id) {
-      return setErrormessage("会員番号を入力してください")
-    }
-    const now = new Date();
+  const now = new Date();
     const year = now.getFullYear(); //年
     const mon = now.getMonth() + 1; //月 １を足す
     const day = now.getDate(); //日
@@ -37,7 +30,13 @@ export default function UserAttendance() {
     const sec = now.getSeconds(); //秒
     const Time =
       year + "/" + mon + "/" + day + "  " + hour + ":" + min + ":" + sec;
-    setAttendanceTime(Time);
+  const Enter = async () => {
+    setErrormessage("")
+    if (!id) {
+      return setErrormessage("会員番号を入力してください");
+    }
+    
+   
     //状態をまず確認
     const attendanceRef = doc(db, "users", id);
     const docSnap = await getDoc(attendanceRef);
@@ -46,7 +45,7 @@ export default function UserAttendance() {
       console.log("Document data:", docSnap.data());
       console.log(docSnap.data().statue);
       if (docSnap.data().statue) {
-        setErrormessage("エラー！！既に入室しています。");
+        setErrormessage("エラー！！既入場しています。");
       } else {
         console.log(false);
         await addDoc(collection(db, "users-attendance"), {
@@ -58,9 +57,20 @@ export default function UserAttendance() {
         const users_status = doc(db, "users", id);
         await updateDoc(users_status, { statue: true });
         const usersSnap = await getDoc(users_status);
-        console.log(usersSnap.data().name)
-        setNotice(`${usersSnap.data().name}さんが入場しました。`)
+        if (usersSnap.exists()) {
+          setAttendanceTime(Time);
+          console.log(usersSnap.data().name);
+          setNotice(`${usersSnap.data().name}さんが入場しました。`);
+        }
+        setTimenotice("3秒後にリセットされます")
+        setTimeout(() => {
+          setNotice("");
+          setAttendanceTime("");
+          setId("")
+          setTimenotice("")
+    setErrormessage("")
 
+        }, 3000);
       }
     } else {
       // doc.data() will be undefined in this case
@@ -68,7 +78,12 @@ export default function UserAttendance() {
     }
   };
 
+
   const Exit = async () => {
+    if (!id) {
+      return setErrormessage("会員番号を入力してください");
+    }
+    setErrormessage("")
     //状態をまず確認
     const attendanceRef = doc(db, "users", id);
     const docSnap = await getDoc(attendanceRef);
@@ -76,7 +91,6 @@ export default function UserAttendance() {
       console.log("Document data:", docSnap.data());
       console.log(docSnap.data().statue);
       if (docSnap.data().statue) {
-        
         await addDoc(collection(db, "users-attendance"), {
           id: id,
           enterTime: Timestamp.fromDate(new Date()),
@@ -85,6 +99,20 @@ export default function UserAttendance() {
         //status:trueを保存
         const users_status = doc(db, "users", id);
         await updateDoc(users_status, { statue: false });
+        const usersSnap = await getDoc(users_status);
+        if (usersSnap.exists()) {
+          setAttendanceTime(Time);
+          console.log(usersSnap.data().name);
+          setNotice(`${usersSnap.data().name}さんが退場しました。`);
+          setTimenotice("3秒後にリセットされます")
+          setTimeout(() => {
+            setNotice("");
+            setAttendanceTime("");
+            setId("")
+    setErrormessage("")
+
+          }, 3000);
+        }
       } else {
         console.log(false);
         setErrormessage("エラー！！入場していません。");
@@ -93,11 +121,6 @@ export default function UserAttendance() {
       // doc.data() will be undefined in this case
       console.log("No such document!");
     }
-    await addDoc(collection(db, "users-attendance"), {
-      id: id,
-      exitTime: Timestamp.fromDate(new Date()),
-      enterTime: "",
-    });
   };
 
   setInterval(() => {
@@ -106,6 +129,7 @@ export default function UserAttendance() {
 
   return (
     <>
+    <Layout>
       <div className={styles.contents}>
         <div className={styles.user_number}>
           {/* {user.map((u)=>u)} */}
@@ -138,10 +162,12 @@ export default function UserAttendance() {
         </div>
         <div className={styles.attendance_notice}>
           <p>{errormessage}</p>
-            <p>{notice}</p>
+          <p>{notice}</p>
           <span>{attendanceTime}</span>
+          <p>{timenotice}</p>
         </div>
       </div>
+      </Layout>
     </>
   );
 }
