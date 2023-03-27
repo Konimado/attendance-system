@@ -67,7 +67,7 @@ export default function CreateUser() {
       error.startDate === ""
     ) {
       // console.log("データ送信");
-      await addDoc(collection(db, "users"), {
+      await setDoc(doc(db, "users",num), {
         name,
         birth,
         postalCode,
@@ -77,7 +77,7 @@ export default function CreateUser() {
         gender,
         plan,
         startDate,
-        num,
+  
       });
       router.push("/");
     }
