@@ -16,12 +16,7 @@ export default function CreateUser() {
   const [birth, setBirth] = useState("");
   const [plan, setPlan] = useState("");
   const [startDate, setstartDate] = useState("");
-<<<<<<< HEAD
-  const [errormessage,setErrormessage]=useState("")
-  const [validate,setValidate]=use
 
-  console.log(typeof birth);
-=======
   const [errormessage, setErrormessage] = useState({
     name: "",
     birth: "",
@@ -34,7 +29,7 @@ export default function CreateUser() {
     startDate: "",
     num: "",
   });
->>>>>>> main
+
 
   const addressAutoComplete = () => {
     axios
@@ -46,7 +41,6 @@ export default function CreateUser() {
 
   const CreateUser = async (e) => {
     e.preventDefault();
-<<<<<<< HEAD
   setErrormessage("")
 
     if(!name){
@@ -86,51 +80,6 @@ export default function CreateUser() {
           });
           router.push("/");
         };
-=======
-    setErrormessage({
-      name: "",
-      birth: "",
-      postalCode: "",
-      address: "",
-      phoneNumber: "",
-      mailAddress: "",
-      gender: "",
-      plan: "",
-      startDate: "",
-      num: "",
-    });
-    const error = checkvalidate();
-    setErrormessage(error);
-    console.log("res", error);
-    const num = ("000" + Math.floor(Math.random() * 10000)).substr(-4, 4);
-    console.log("error", errormessage.name);
-
-    if (
-      error.name === "" &&
-      error.address === "" &&
-      error.birth === "" &&
-      error.gender === "" &&
-      error.phoneNumber === "" &&
-      error.plan === "" &&
-      error.startDate === ""
-    ) {
-      // console.log("データ送信");
-      await addDoc(collection(db, "users"), {
-        name,
-        birth,
-        postalCode,
-        address,
-        phoneNumber,
-        mailAddress,
-        gender,
-        plan,
-        startDate,
-        num,
-      });
-      router.push("/");
-    }
-  };
->>>>>>> main
 
   const checkvalidate = () => {
     const error = {
