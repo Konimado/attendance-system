@@ -1,0 +1,46 @@
+.contents {
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  .user_number {
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+  .attendance_button {
+    display: flex;
+    .button {
+      margin-top: 10px;
+      width: 200px;
+
+      margin-left: auto;
+      margin-right: auto;
+
+      .click {
+        margin-top: 10px;
+        background-color: #449887;
+        border-radius: 5px;
+        color: white;
+        border: none;
+        width: 100%;
+        height: 80px;
+        font-size: 24px;
+      }
+    }
+  }
+  .real_time {
+    margin-top: 40px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+  .attendance_notice {
+    margin-top: 40px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+}
