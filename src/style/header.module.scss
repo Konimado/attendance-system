@@ -1,0 +1,31 @@
+.main {
+  background-color: #449887;
+  margin: auto;
+}
+
+.site {
+  max-width: 1000px;
+  position: relative;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+}
+
+.nav__wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+}
+
+.nav__item a{
+  padding-right: 1rem;
+  display: block;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.nav__toggle {
+  display: none;
+}
