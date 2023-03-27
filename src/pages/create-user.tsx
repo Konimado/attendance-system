@@ -28,6 +28,7 @@ export default function CreateUser() {
     plan: "",
     startDate: "",
     num: "",
+   
   });
 
 
@@ -46,6 +47,32 @@ export default function CreateUser() {
     if(!name){
         setErrormessage('※名前を入力してください')
 
+    if (
+      error.name === "" &&
+      error.address === "" &&
+      error.birth === "" &&
+      error.gender === "" &&
+      error.phoneNumber === "" &&
+      error.plan === "" &&
+      error.startDate === ""
+    ) {
+      // console.log("データ送信");
+      await setDoc(doc(db, "users",num), {
+        name,
+        birth,
+        postalCode,
+        address,
+        phoneNumber,
+        mailAddress,
+        gender,
+        plan,
+        startDate,
+        statue:false
+  
+      });
+      router.push("/");
+    }
+  };
     }
      if(!address){
         setErrormessage('※住所を入力してください')
