@@ -93,8 +93,8 @@ export default function UserAttendance() {
       if (docSnap.data().statue) {
         await addDoc(collection(db, "users-attendance"), {
           id: id,
-          enterTime: Timestamp.fromDate(new Date()),
-          exitTime: "",
+          enterTime: "",
+          exitTime: Timestamp.fromDate(new Date()),
         });
         //status:trueを保存
         const users_status = doc(db, "users", id);
