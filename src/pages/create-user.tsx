@@ -16,7 +16,6 @@ export default function CreateUser() {
   const [birth, setBirth] = useState("");
   const [plan, setPlan] = useState("");
   const [startDate, setstartDate] = useState("");
-
   const [errormessage, setErrormessage] = useState({
     name: "",
     birth: "",
@@ -31,7 +30,6 @@ export default function CreateUser() {
    
   });
 
-
   const addressAutoComplete = () => {
     axios
       .get(`https://api.zipaddress.net/?zipcode=${postalCode}`)
@@ -42,10 +40,23 @@ export default function CreateUser() {
 
   const CreateUser = async (e) => {
     e.preventDefault();
-  setErrormessage("")
-
-    if(!name){
-        setErrormessage('※名前を入力してください')
+    setErrormessage({
+      name: "",
+      birth: "",
+      postalCode: "",
+      address: "",
+      phoneNumber: "",
+      mailAddress: "",
+      gender: "",
+      plan: "",
+      startDate: "",
+      num: "",
+    });
+    const error = checkvalidate();
+    setErrormessage(error);
+    console.log("res", error);
+    const num = ("000" + Math.floor(Math.random() * 10000)).substr(-4, 4);
+    console.log("error", errormessage.name);
 
     if (
       error.name === "" &&
@@ -73,40 +84,6 @@ export default function CreateUser() {
       router.push("/");
     }
   };
-    }
-     if(!address){
-        setErrormessage('※住所を入力してください')
-    }
-     if(!birth.match(/\d{4}\/\d{2}\/\d{2}/)){
-        setErrormessage('※生年月日を正しく入力してください')
-    }
-     if (!phoneNumber.match(/^0[-0-9]{9,12}$/)){
-        setErrormessage('※電話番号を正しく入力してください')
-    }if(!mailAddress.match(/^[a-zA-Z0-9_+-]+(.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/)){
-        setErrormessage('※メールアドレスを正しく入力してください')
-    }
-    if(!gender){
-        setErrormessage('※性別を選択してください')
-    }
-    if(!plan){
-        setErrormessage('プランを選択してください')
-    }
-    if(!startDate.match(/\d{4}\/\d{2}\/\d{2}/)){
-        setErrormessage('※入会日を正しく入力してください')
-    }else{
-        await addDoc(collection(db, "users"), {
-            name,
-            birth,
-            postalCode,
-            address,
-            phoneNumber,
-            mailAddress,
-            gender,
-            plan,
-            startDate
-          });
-          router.push("/");
-        };
 
   const checkvalidate = () => {
     const error = {
