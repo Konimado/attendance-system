@@ -27,6 +27,7 @@ export default function CreateUser() {
     plan: "",
     startDate: "",
     num: "",
+   
   });
 
   const addressAutoComplete = () => {
@@ -77,6 +78,7 @@ export default function CreateUser() {
         gender,
         plan,
         startDate,
+        statue:false
   
       });
       router.push("/");
