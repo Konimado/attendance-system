@@ -27,6 +27,7 @@ export default function CreateUser() {
     plan: "",
     startDate: "",
     num: "",
+   
   });
 
   const addressAutoComplete = () => {
@@ -67,7 +68,7 @@ export default function CreateUser() {
       error.startDate === ""
     ) {
       // console.log("データ送信");
-      await addDoc(collection(db, "users"), {
+      await setDoc(doc(db, "users",num), {
         name,
         birth,
         postalCode,
@@ -77,7 +78,8 @@ export default function CreateUser() {
         gender,
         plan,
         startDate,
-        num,
+        statue:false
+  
       });
       router.push("/");
     }
