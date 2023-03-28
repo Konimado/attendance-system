@@ -10,6 +10,7 @@ import { db } from "../firebase";
 import { useState } from "react";
 import styles from "../style/user-attendance.module.scss";
 import Layout from "@/components/layout";
+import Times from "@/function/time";
 
 export default function UserAttendance() {
   const [id, setId] = useState("");
@@ -19,24 +20,29 @@ export default function UserAttendance() {
   const [attendanceTime, setAttendanceTime] = useState("");
   const [errormessage, setErrormessage] = useState("");
   const [notice, setNotice] = useState("");
-  const [timenotice,setTimenotice]=useState("")
+  const [timenotice, setTimenotice] = useState("");
 
-  const now = new Date();
-    const year = now.getFullYear(); //年
-    const mon = now.getMonth() + 1; //月 １を足す
-    const day = now.getDate(); //日
-    const hour = now.getHours(); //時間
-    const min = now.getMinutes(); //分
-    const sec = now.getSeconds(); //秒
-    const Time =
-      year + "/" + mon + "/" + day + "  " + hour + ":" + min + ":" + sec;
+  // const now = new Date();
+  // const year = now.getFullYear(); //年
+  // const mon = now.getMonth() + 1; //月 １を足す
+  // const day = now.getDate(); //日
+  // const hour = now.getHours(); //時間
+  // const min = now.getMinutes(); //分
+  // const sec = now.getSeconds(); //秒
+  
+  const Time=Times().year + "/" + Times().mon + "/" +Times().day + "  " + Times().hour + ":" +Times().min + ":" + Times().sec;
+
+console.log("Time",Times())
+console.log("Times",Time)
+
+
+
   const Enter = async () => {
-    setErrormessage("")
+    setErrormessage("");
     if (!id) {
       return setErrormessage("会員番号を入力してください");
     }
-    
-   
+
     //状態をまず確認
     const attendanceRef = doc(db, "users", id);
     const docSnap = await getDoc(attendanceRef);
@@ -62,14 +68,13 @@ export default function UserAttendance() {
           console.log(usersSnap.data().name);
           setNotice(`${usersSnap.data().name}さんが入場しました。`);
         }
-        setTimenotice("3秒後にリセットされます")
+        setTimenotice("3秒後にリセットされます");
         setTimeout(() => {
           setNotice("");
           setAttendanceTime("");
-          setId("")
-          setTimenotice("")
-    setErrormessage("")
-
+          setId("");
+          setTimenotice("");
+          setErrormessage("");
         }, 3000);
       }
     } else {
@@ -78,12 +83,11 @@ export default function UserAttendance() {
     }
   };
 
-
   const Exit = async () => {
     if (!id) {
       return setErrormessage("会員番号を入力してください");
     }
-    setErrormessage("")
+    setErrormessage("");
     //状態をまず確認
     const attendanceRef = doc(db, "users", id);
     const docSnap = await getDoc(attendanceRef);
@@ -104,13 +108,12 @@ export default function UserAttendance() {
           setAttendanceTime(Time);
           console.log(usersSnap.data().name);
           setNotice(`${usersSnap.data().name}さんが退場しました。`);
-          setTimenotice("3秒後にリセットされます")
+          setTimenotice("3秒後にリセットされます");
           setTimeout(() => {
             setNotice("");
             setAttendanceTime("");
-            setId("")
-    setErrormessage("")
-
+            setId("");
+            setErrormessage("");
           }, 3000);
         }
       } else {
@@ -129,44 +132,44 @@ export default function UserAttendance() {
 
   return (
     <>
-    <Layout>
-      <div className={styles.contents}>
-        <div className={styles.user_number}>
-          {/* {user.map((u)=>u)} */}
-          <label htmlFor="">
-            会員番号
-            <div>
-              <input
-                type="text"
-                value={id}
-                onChange={(e) => setId(e.target.value)}
-              />
+      <Layout>
+        <div className={styles.contents}>
+          <div className={styles.user_number}>
+            {/* {user.map((u)=>u)} */}
+            <label htmlFor="">
+              会員番号
+              <div>
+                <input
+                  type="text"
+                  value={id}
+                  onChange={(e) => setId(e.target.value)}
+                />
+              </div>
+            </label>
+          </div>
+          <div className={styles.attendance_button}>
+            <div className={styles.button}>
+              <button onClick={Enter} className={styles.click}>
+                入場
+              </button>
             </div>
-          </label>
-        </div>
-        <div className={styles.attendance_button}>
-          <div className={styles.button}>
-            <button onClick={Enter} className={styles.click}>
-              入場
-            </button>
+            <div className={styles.button}>
+              <button onClick={Exit} className={styles.click}>
+                退場
+              </button>
+            </div>
           </div>
-          <div className={styles.button}>
-            <button onClick={Exit} className={styles.click}>
-              退場
-            </button>
+          <div className={styles.real_time}>
+            <div>現在時刻</div>
+            <span>{realTime}</span>
+          </div>
+          <div className={styles.attendance_notice}>
+            <p>{errormessage}</p>
+            <p>{notice}</p>
+            <span>{attendanceTime}</span>
+            <p>{timenotice}</p>
           </div>
         </div>
-        <div className={styles.real_time}>
-          <div>現在時刻</div>
-          <span>{realTime}</span>
-        </div>
-        <div className={styles.attendance_notice}>
-          <p>{errormessage}</p>
-          <p>{notice}</p>
-          <span>{attendanceTime}</span>
-          <p>{timenotice}</p>
-        </div>
-      </div>
       </Layout>
     </>
   );
