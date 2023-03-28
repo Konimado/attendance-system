@@ -14,20 +14,12 @@ import Times from "@/function/time";
 
 export default function UserAttendance() {
   const [id, setId] = useState("");
-
   const [realTime, setRealTime] = useState("");
-
   const [attendanceTime, setAttendanceTime] = useState("");
   const [errormessage, setErrormessage] = useState("");
   const [notice, setNotice] = useState("");
   const [timenotice, setTimenotice] = useState("");
-
-  
   const Time=Times().year + "/" + Times().mon + "/" +Times().day + "  " + Times().hour + ":" +Times().min + ":" + Times().sec;
-
-
-
-
 
   const Enter = async () => {
     setErrormessage("");
@@ -40,12 +32,9 @@ export default function UserAttendance() {
     const docSnap = await getDoc(attendanceRef);
 
     if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-      console.log(docSnap.data().statue);
       if (docSnap.data().statue) {
         setErrormessage("エラー！！既入場しています。");
       } else {
-        console.log(false);
         await addDoc(collection(db, "users-attendance"), {
           id: id,
           enterTime: Timestamp.fromDate(new Date()),
@@ -57,7 +46,6 @@ export default function UserAttendance() {
         const usersSnap = await getDoc(users_status);
         if (usersSnap.exists()) {
           setAttendanceTime(Time);
-          console.log(usersSnap.data().name);
           setNotice(`${usersSnap.data().name}さんが入場しました。`);
         }
         setTimenotice("3秒後にリセットされます");
@@ -70,8 +58,7 @@ export default function UserAttendance() {
         }, 3000);
       }
     } else {
-      // doc.data() will be undefined in this case
-      console.log("No such document!");
+      setErrormessage("会員番号が間違っています")
     }
   };
 
@@ -84,8 +71,6 @@ export default function UserAttendance() {
     const attendanceRef = doc(db, "users", id);
     const docSnap = await getDoc(attendanceRef);
     if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-      console.log(docSnap.data().statue);
       if (docSnap.data().statue) {
         await addDoc(collection(db, "users-attendance"), {
           id: id,
@@ -98,7 +83,6 @@ export default function UserAttendance() {
         const usersSnap = await getDoc(users_status);
         if (usersSnap.exists()) {
           setAttendanceTime(Time);
-          console.log(usersSnap.data().name);
           setNotice(`${usersSnap.data().name}さんが退場しました。`);
           setTimenotice("3秒後にリセットされます");
           setTimeout(() => {
@@ -109,12 +93,10 @@ export default function UserAttendance() {
           }, 3000);
         }
       } else {
-        console.log(false);
         setErrormessage("エラー！！入場していません。");
       }
     } else {
-      // doc.data() will be undefined in this case
-      console.log("No such document!");
+      setErrormessage("会員番号が間違っています")
     }
   };
 
@@ -127,7 +109,6 @@ export default function UserAttendance() {
       <Layout>
         <div className={styles.contents}>
           <div className={styles.user_number}>
-            {/* {user.map((u)=>u)} */}
             <label htmlFor="">
               会員番号
               <div>
