@@ -6,7 +6,7 @@ export default function MemberAttendanceLog() {
 
   const fetcher1 = (resource: any, init: any) =>
   fetch(resource, init).then((res) => res.json());
-  const { data } = useSWR( "/api/user-get", fetcher1);
+  const { data } = useSWR( "/api/user_get", fetcher1);
   console.log("datam",data)
 
   
