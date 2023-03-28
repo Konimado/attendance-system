@@ -19,7 +19,18 @@ export default function MemberAttendance() {
   const [errormessage, setErrormessage] = useState("");
   const [notice, setNotice] = useState("");
   const [timenotice, setTimenotice] = useState("");
-  const Time=Times().year + "/" + Times().mon + "/" +Times().day + "  " + Times().hour + ":" +Times().min + ":" + Times().sec;
+  const Time =
+    Times().year +
+    "/" +
+    Times().mon +
+    "/" +
+    Times().day +
+    "  " +
+    Times().hour +
+    ":" +
+    Times().min +
+    ":" +
+    Times().sec;
 
   const Enter = async () => {
     setErrormessage("");
@@ -35,14 +46,17 @@ export default function MemberAttendance() {
       if (docSnap.data().statue) {
         setErrormessage("エラー！！既入場しています。");
       } else {
-        await addDoc(collection(db, "users-attendance"), {
-          id: id,
-          enterTime: Timestamp.fromDate(new Date()),
-          exitTime: "",
-        });
+        // await addDoc(collection(db, "users-attendance"), {
+        //   id: id,
+        //   enterTime: Timestamp.fromDate(new Date()),
+        //   exitTime: "",
+        // });
         //status:trueを保存
         const users_status = doc(db, "users", id);
-        await updateDoc(users_status, { statue: true });
+        await updateDoc(users_status, {
+          statue: true,
+          enterTime: Timestamp.fromDate(new Date()),
+        });
         const usersSnap = await getDoc(users_status);
         if (usersSnap.exists()) {
           setAttendanceTime(Time);
@@ -58,7 +72,7 @@ export default function MemberAttendance() {
         }, 3000);
       }
     } else {
-      setErrormessage("会員番号が間違っています")
+      setErrormessage("会員番号が間違っています");
     }
   };
 
@@ -72,16 +86,17 @@ export default function MemberAttendance() {
     const docSnap = await getDoc(attendanceRef);
     if (docSnap.exists()) {
       if (docSnap.data().statue) {
-        await addDoc(collection(db, "users-attendance"), {
-          id: id,
-          enterTime: "",
-          exitTime: Timestamp.fromDate(new Date()),
-        });
-        //status:trueを保存
+        //status:falseを保存
         const users_status = doc(db, "users", id);
-        await updateDoc(users_status, { statue: false });
         const usersSnap = await getDoc(users_status);
         if (usersSnap.exists()) {
+          //enterTime=usersSnap.data().enterTime
+          await addDoc(collection(db, "users-attendance"), {
+            id: id,
+            enterTime: usersSnap.data().enterTime,
+            exitTime: Timestamp.fromDate(new Date()),
+          });
+          await updateDoc(users_status, { statue: false,enterTime:""});
           setAttendanceTime(Time);
           setNotice(`${usersSnap.data().name}さんが退場しました。`);
           setTimenotice("3秒後にリセットされます");
@@ -96,7 +111,7 @@ export default function MemberAttendance() {
         setErrormessage("エラー！！入場していません。");
       }
     } else {
-      setErrormessage("会員番号が間違っています")
+      setErrormessage("会員番号が間違っています");
     }
   };
 
