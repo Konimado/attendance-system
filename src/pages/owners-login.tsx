@@ -1,7 +1,7 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import React, { useState } from "react";
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 import ownersLogin from "../style/ownersLogin.module.scss";
 
 export default function OwnersLogin() {

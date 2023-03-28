@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { collection, doc, getDoc, getDocs, orderBy } from "firebase/firestore";
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 
 // type EntryUsers = {
 //   address?: string;

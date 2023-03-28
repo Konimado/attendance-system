@@ -9,10 +9,10 @@ import {
 import { db } from "../firebase";
 import { useState } from "react";
 import styles from "../style/user-attendance.module.scss";
-import Layout from "@/components/layout";
+import Layout from "@/components/Layout";
 import Times from "@/function/time";
 
-export default function UserAttendance() {
+export default function MemberAttendance() {
   const [id, setId] = useState("");
   const [realTime, setRealTime] = useState("");
   const [attendanceTime, setAttendanceTime] = useState("");

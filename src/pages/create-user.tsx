@@ -4,7 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import styles from "../style/create-user.module.scss";
 import { useRouter } from "next/router";
-import Layout from "@/components/layout";
+import Layout from "@/components/Layout";
 
 export default function CreateUser() {
   const router = useRouter();
