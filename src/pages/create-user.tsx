@@ -31,6 +31,7 @@ export default function CreateUser() {
   });
 
   const addressAutoComplete = () => {
+    if(!postalCode)return 
     axios
       .get(`https://api.zipaddress.net/?zipcode=${postalCode}`)
       .then((res) => {
@@ -132,107 +133,132 @@ export default function CreateUser() {
     <>
     <Layout>
       <h1>会員登録</h1>
-
       <div className={styles.contents}>
-        <form action="" onSubmit={CreateUser}>
-          <div className={styles.flex}>
+        <form onSubmit={CreateUser}>
+          <div>
             <div className={styles.divideContents}>
               <div className={styles.label}>
                 名前
-                <input
-                  type="text"
-                  value={name}
-                  className={styles.input}
-                  onChange={(e) => setName(e.target.value)}
-                />
+                <div>
+                  <input
+                    type="text"
+                    value={name}
+                    className={styles.input}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
                 <div className={styles.errormessage}>{errormessage.name}</div>
               </div>
               <div className={styles.label}>
                 郵便番号
-                <input
-                  type="text"
-                  value={postalCode}
-                  onChange={(e) => setPostalCode(e.target.value)}
-                />
-                <button onClick={addressAutoComplete}>🔍</button>
+                <div>
+                  <input
+                    type="text"
+                    value={postalCode}
+                    onChange={(e) => setPostalCode(e.target.value)}
+                    className={styles.input}
+                  />
+                <button onClick={addressAutoComplete} className={styles.postal}>🔍</button>
+                </div>
               </div>
               <div className={styles.label}>
                 住所
-                <input
-                  type="text"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                />
+                <div>
+                  <textarea
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    className={styles.input}
+                    cols="70" rows="1"
+                  />
+             
+                </div>
                 <div className={styles.errormessage}>
                   {errormessage.address}
                 </div>
               </div>
               <div className={styles.label}>
                 電話番号
-                <input
-                  type="text"
-                  value={phoneNumber}
-                  onChange={(e) => setphoneNumber(e.target.value)}
-                />
+                <div>
+                  <input
+                    type="text"
+                    value={phoneNumber}
+                    onChange={(e) => setphoneNumber(e.target.value)}
+                    className={styles.input}
+                  />
+                </div>
                 <div className={styles.errormessage}>
                   {errormessage.phoneNumber}
                 </div>
               </div>
               <div className={styles.label}>
                 メールアドレス
-                <input
-                  type="text"
-                  value={mailAddress}
-                  onChange={(e) => setMailAddress(e.target.value)}
-                />
+                <div>
+                  <input
+                    type="text"
+                    value={mailAddress}
+                    onChange={(e) => setMailAddress(e.target.value)}
+                    className={styles.input}
+                  />
+                </div>
                 <div className={styles.errormessage}>
                   {errormessage.mailAddress}
                 </div>
               </div>
               <div className={styles.label}>
-                性別 男
-                <input
-                  type="radio"
-                  value="male"
-                  name="gender"
-                  onChange={(e) => setGender(e.target.value)}
-                />
-                女
-                <input
-                  type="radio"
-                  value="female"
-                  name="gender"
-                  onChange={(e) => setGender(e.target.value)}
-                />
+                  性別
+                <div>
+                   男
+                  <input
+                    type="radio"
+                    value="male"
+                    name="gender"
+                    onChange={(e) => setGender(e.target.value)}
+                  />
+                  女
+                  <input
+                    type="radio"
+                    value="female"
+                    name="gender"
+                    onChange={(e) => setGender(e.target.value)}
+                  />
+                </div>
                 <div className={styles.errormessage}>{errormessage.gender}</div>
               </div>
               <div className={styles.label}>
                 生年月日(例:1999/01/01)
-                <input
-                  type="text"
-                  value={birth}
-                  onChange={(e) => setBirth(e.target.value)}
-                />
+                <div>
+                  <input
+                    type="text"
+                    value={birth}
+                    onChange={(e) => setBirth(e.target.value)}
+                    className={styles.input}
+                  />
+                </div>
                 <div className={styles.errormessage}>{errormessage.birth}</div>
               </div>
               <div className={styles.label}>
                 プラン
-                <select value={plan} onChange={(e) => setPlan(e.target.value)}>
-                  <option value="-">-</option>
-                  <option value="all">２４時間</option>
-                  <option value="weekday">平日のみ</option>
-                  <option value="weekend">土日のみ</option>
-                  <option value="daily">09:00~18:00</option>
-                </select>
+                <div>
+                  <select value={plan} onChange={(e) => setPlan(e.target.value)}   className={styles.input}>
+                    <option value="-">-</option>
+                    <option value="all">２４時間</option>
+                    <option value="weekday">平日のみ</option>
+                    <option value="weekend">土日のみ</option>
+                    <option value="daily">09:00~18:00</option>
+                  </select>
+                </div>
                 <div className={styles.errormessage}>{errormessage.plan}</div>
               </div>
               <div className={styles.label}>
                 入会日(例:1999/01/01)
-                <input
-                  type="text"
-                  value={startDate}
-                  onChange={(e) => setstartDate(e.target.value)}
-                />
+                <div>
+                  <input
+                    type="text"
+                    value={startDate}
+                    onChange={(e) => setstartDate(e.target.value)}
+                    className={styles.input}
+                  />
+                </div>
                 <div className={styles.errormessage}>
                   {errormessage.startDate}
                 </div>
