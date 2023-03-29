@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
-import { collection, doc, getDoc, getDocs, orderBy } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import Layout from "../components/Layout";
+import Time from "../function/time";
+import index from "../style/index.module.scss";
 
 // type EntryUsers = {
 //   address?: string;
 //   birth?: string;
+//   enterTime: number;
+//   exitTime: number;
 //   gender?: string;
 //   mailAddress?: string;
 //   name?: string;
@@ -26,36 +37,27 @@ const Index = () => {
 
   useEffect(() => {
     //データベースからデータを取得する(attendance情報)
-    const usersAttendance = collection(db, "users-attendance");
-    // const q = query(usersAttendance, orderBy());
-    getDocs(usersAttendance).then((snapShot) => {
+    const users = collection(db, "users");
+    const q = query(users, orderBy("enterTime", "desc"));
+    getDocs(q).then((snapShot) => {
       //現在時刻取得
-      const date = new Date();
-      const nowYear = date.getFullYear();
-      const nowMonth = date.getMonth();
-      const nowDate = date.getDate();
-      const nowTime = `${nowYear}/${nowMonth + 1}/${nowDate}`;
+      const time = Time();
+      const nowTime = `${time.year}/${time.mon}/${time.day}`;
       //users-attendance情報取得
       const nowEntries = snapShot.docs.map((doc) => doc.data());
       //現在入場者情報取得
-      nowEntries
-        .filter((nowEntry) => {
-          if (nowEntry.enterTime) {
-            const entrydate = nowEntry.enterTime.toDate();
-            const entryYear = entrydate.getFullYear();
-            const entryMonth = entrydate.getMonth();
-            const entryDate = entrydate.getDate();
-            const entryTime = `${entryYear}/${entryMonth + 1}/${entryDate}`;
-            return entryTime === nowTime;
-          }
-        })
-        .map(async (entryItem) => {
-          //データベースからデータを取得する(ユーザー情報)
-          const users = doc(db, "users", `${entryItem.id}`);
-          const docSnap = await getDoc(users);
-          mapEntryUsers.push(docSnap.data());
-          setNowEntryUsers(mapEntryUsers);
-        });
+      // const nowEntryUsersItem = nowEntries.filter((nowEntry) => {
+      const nowEntryUsersItem: any = nowEntries.filter((nowEntry) => {
+        if (nowEntry.enterTime) {
+          const entrydate = nowEntry.enterTime.toDate();
+          const entryYear = entrydate.getFullYear();
+          const entryMonth = entrydate.getMonth();
+          const entryDate = entrydate.getDate();
+          const entryTime = `${entryYear}/${entryMonth + 1}/${entryDate}`;
+          return entryTime === nowTime;
+        }
+      });
+      return setNowEntryUsers(nowEntryUsersItem);
     });
     //warningを解消する為,ESLintのルールを無効
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,63 +66,93 @@ const Index = () => {
   //退場
   useEffect(() => {
     //データベースからデータを取得する(attendance情報)
-    const usersAttendance = collection(db, "users-attendance");
-    // const q = query(usersAttendance, orderBy());
-    getDocs(usersAttendance).then((snapShot) => {
+    const usersAttendance = collection(db, "users");
+    const q = query(usersAttendance, orderBy("enterTime", "desc"));
+    getDocs(q).then((snapShot) => {
       //現在時刻取得
-      const date = new Date();
-      const nowYear = date.getFullYear();
-      const nowMonth = date.getMonth();
-      const nowDate = date.getDate();
-      const nowTime = `${nowYear}/${nowMonth + 1}/${nowDate}`;
+      const time = Time();
+      const nowTime = `${time.year}/${time.mon}/${time.day}`;
       //users-attendance情報取得
+      snapShot.docs.map((doc) => console.log(doc.data()));
       const nowExits = snapShot.docs.map((doc) => doc.data());
-      //現在入場者情報取得
-      nowExits
-        .filter((nowExit) => {
-          if (nowExit.exitTime) {
-            const exitdate = nowExit.exitTime.toDate();
-            const exitYear = exitdate.getFullYear();
-            const exitMonth = exitdate.getMonth();
-            const exitDate = exitdate.getDate();
-            const exitTime = `${exitYear}/${exitMonth + 1}/${exitDate}`;
-            return exitTime === nowTime;
-          }
-        })
-        .map(async (exitItem) => {
-          //データベースからデータを取得する(ユーザー情報)
-          const users = doc(db, "users", `${exitItem.id}`);
-          const docSnap = await getDoc(users);
-          mapExitUsers.push(docSnap.data());
-          setNowExitUsers(mapExitUsers);
-        });
+      //現在退場者情報取得
+      // const nowExitUsersItem= nowExits.filter((nowExit) => {
+      const nowExitUsersItem: any = nowExits.filter((nowExit) => {
+        if (nowExit.exitTime) {
+          const entrydate = nowExit.enterTime.toDate();
+          const entryYear = entrydate.getFullYear();
+          const entryMonth = entrydate.getMonth();
+          const entryDate = entrydate.getDate();
+          const entryTime = `${entryYear}/${entryMonth + 1}/${entryDate}`;
+          return entryTime === nowTime;
+        }
+      });
+      return setNowExitUsers(nowExitUsersItem);
     });
     //warningを解消する為,ESLintのルールを無効
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // setInterval(() => {
-  //   console.log(nowEntryUsers);
-  // }, 5000);
-
   return (
     <Layout>
-      <div>
-        <p>入場</p>
-        {nowEntryUsers.map((item: any, index) => (
-          <div key={index}>
-            <h1>{item.name}</h1>
-          </div>
-        ))}
-      </div>
-      <div>
-        <p>退場</p>
-        {nowExitUsers.map((item: any, index) => (
-          <div key={index}>
-            <h1>{item.name}</h1>
-          </div>
-        ))}
-      </div>
+      <>
+        <h2 className={index.h2}>入場</h2>
+        <div className={index.table}>
+          <table>
+            <thead>
+              <tr>
+                <th>名前</th>
+                <th>入場時間</th>
+              </tr>
+            </thead>
+            <tbody>
+              {nowEntryUsers.map((item: any, index) => (
+                <tr key={index}>
+                  <td>{item.name}</td>
+                  {item.enterTime.toDate().getMinutes() < 10 ? (
+                    <td>{`${item.enterTime
+                      .toDate()
+                      .getHours()}:0${item.enterTime
+                      .toDate()
+                      .getMinutes()}`}</td>
+                  ) : (
+                    <td>{`${item.enterTime.toDate().getHours()}:${item.enterTime
+                      .toDate()
+                      .getMinutes()}`}</td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <h2 className={index.h2}>退場</h2>
+        <div className={index.table}>
+          <table>
+            <thead>
+              <tr>
+                <th>名前</th>
+                <th>退場時間</th>
+              </tr>
+            </thead>
+            <tbody>
+              {nowExitUsers.map((item: any, index) => (
+                <tr key={index}>
+                  <td>{item.name}</td>
+                  {item.exitTime.toDate().getMinutes() < 10 ? (
+                    <td>{`${item.exitTime.toDate().getHours()}:0${item.exitTime
+                      .toDate()
+                      .getMinutes()}`}</td>
+                  ) : (
+                    <td>{`${item.exitTime.toDate().getHours()}:${item.exitTime
+                      .toDate()
+                      .getMinutes()}`}</td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </>
     </Layout>
   );
 };
