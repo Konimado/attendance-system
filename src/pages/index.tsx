@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  orderBy,
-  query,
-} from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import Layout from "../components/Layout";
 import Time from "../function/time";
 import index from "../style/index.module.scss";
