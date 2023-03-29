@@ -2,14 +2,11 @@ import Layout from "@/components/Layout";
 import useSWR from "swr";
 
 export default function MemberAttendanceLog() {
-
-
   const fetcher1 = (resource: any, init: any) =>
-  fetch(resource, init).then((res) => res.json());
-  const { data } = useSWR( "/api/user_get", fetcher1);
-  console.log("datam",data)
+    fetch(resource, init).then((res) => res.json());
+  const { data } = useSWR("/api/user_get", fetcher1);
+  console.log("datam", data);
 
-  
   return (
     <>
       <Layout>
