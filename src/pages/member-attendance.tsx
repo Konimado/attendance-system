@@ -11,6 +11,8 @@ import { useState } from "react";
 import styles from "../style/user-attendance.module.scss";
 import Layout from "@/components/Layout";
 import Times from "@/function/time";
+import useSWR from "swr";
+import axios from "axios";
 
 export default function MemberAttendance() {
   const [id, setId] = useState("");
@@ -33,86 +35,83 @@ export default function MemberAttendance() {
     Times().sec;
 
   const Enter = async () => {
-    setErrormessage("");
     if (!id) {
       return setErrormessage("会員番号を入力してください");
     }
 
     //状態をまず確認
-    const attendanceRef = doc(db, "users", id);
-    const docSnap = await getDoc(attendanceRef);
-
-    if (docSnap.exists()) {
-      if (docSnap.data().statue) {
-        setErrormessage("エラー！！既入場しています。");
-      } else {
-        // await addDoc(collection(db, "users-attendance"), {
-        //   id: id,
-        //   enterTime: Timestamp.fromDate(new Date()),
-        //   exitTime: "",
-        // });
-        //status:trueを保存
-        const users_status = doc(db, "users", id);
-        await updateDoc(users_status, {
-          statue: true,
-          enterTime: Timestamp.fromDate(new Date()),
-        });
-        const usersSnap = await getDoc(users_status);
-        if (usersSnap.exists()) {
-          setAttendanceTime(Time);
-          setNotice(`${usersSnap.data().name}さんが入場しました。`);
+    //response.dataに指定userの情報が取得
+    axios.post("/api/user_get", { id: id }).then((response) => {
+      if (response.data[0]) {
+        console.log(response.data);
+        const userInfo = response.data[0];
+        console.log(response.data[0].statue);
+        //statue:trueの場合はエラー文を出力
+        if (response.data[0].statue) {
+          setErrormessage("エラー！！既に入場しています。");
         }
-        setTimenotice("3秒後にリセットされます");
-        setTimeout(() => {
-          setNotice("");
-          setAttendanceTime("");
-          setId("");
-          setTimenotice("");
-          setErrormessage("");
-        }, 3000);
+        //statue;falseの場合はstatue:tureを保存する
+        else {
+          axios.post("/api/user_post", {
+            id: id,
+            statue: true,
+          });
+          setAttendanceTime(Time);
+          setNotice(`${userInfo.name}さんが入場しました。`);
+          setTimenotice("3秒後にリセットされます");
+          setTimeout(() => {
+            setNotice("");
+            setAttendanceTime("");
+            setId("");
+            setTimenotice("");
+            setErrormessage("");
+          }, 3000);
+        }
+      } else {
+        setErrormessage("会員番号が間違っています");
+
+        // return Promise.reject(new Error("エラーです"));
       }
-    } else {
-      setErrormessage("会員番号が間違っています");
-    }
+    });
   };
 
   const Exit = async () => {
     if (!id) {
       return setErrormessage("会員番号を入力してください");
     }
-    setErrormessage("");
     //状態をまず確認
-    const attendanceRef = doc(db, "users", id);
-    const docSnap = await getDoc(attendanceRef);
-    if (docSnap.exists()) {
-      if (docSnap.data().statue) {
-        //status:falseを保存
-        const users_status = doc(db, "users", id);
-        const usersSnap = await getDoc(users_status);
-        if (usersSnap.exists()) {
-          //enterTime=usersSnap.data().enterTime
-          await addDoc(collection(db, "users-attendance"), {
+    axios.post("/api/user_get", { id: id }).then((response) => {
+      if (response.data[0]) {
+        console.log(response.data);
+        const userInfo = response.data[0];
+        console.log(response.data[0].statue);
+        //statue:trueの場合はstatue:falseを保存
+        if (response.data[0].statue) {
+          axios.post("/api/user_post", {
             id: id,
-            enterTime: usersSnap.data().enterTime,
-            exitTime: Timestamp.fromDate(new Date()),
+            statue: false,
           });
-          await updateDoc(users_status, { statue: false,enterTime:""});
           setAttendanceTime(Time);
-          setNotice(`${usersSnap.data().name}さんが退場しました。`);
+          setNotice(`${userInfo.name}さんが退場しました。`);
           setTimenotice("3秒後にリセットされます");
           setTimeout(() => {
             setNotice("");
             setAttendanceTime("");
             setId("");
+            setTimenotice("");
             setErrormessage("");
           }, 3000);
         }
+        //statue;falseの場合はエラー文を出力
+        else {
+          setErrormessage("エラー！！既に入場しています。");
+        }
       } else {
-        setErrormessage("エラー！！入場していません。");
+        setErrormessage("会員番号が間違っています");
+
+        // return Promise.reject(new Error("エラーです"));
       }
-    } else {
-      setErrormessage("会員番号が間違っています");
-    }
+    });
   };
 
   setInterval(() => {
