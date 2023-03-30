@@ -53,7 +53,7 @@ export default function Header() {
               </>
             ) : (
               <li className={header.nav__item}>
-                <Link href="/ownersLogin">ログイン</Link>
+                <Link href="/owners-login">ログイン</Link>
               </li>
             )}
           </ul>
