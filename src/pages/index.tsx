@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+
 import Layout from "../components/Layout";
 import Time from "../function/time";
 import index from "../style/index.module.scss";
 import axios from "axios";
 import Router from "next/router";
+
 
 // type EntryUsers = {
 //   address?: string;
@@ -30,6 +32,7 @@ const Index = () => {
 
   useEffect(() => {
     //データベースからデータを取得する(attendance情報)
+
     axios
       .post("/api/user_get", { order: "order" })
       .then((response) => {
@@ -56,10 +59,16 @@ const Index = () => {
       .catch(function (error) {
         Router.push("/");
       });
+
     //warningを解消する為,ESLintのルールを無効
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+
+
+
+
+ 
   return (
     <Layout>
       <>
@@ -76,6 +85,8 @@ const Index = () => {
               {nowEntryUsers.map((item: any, index) => (
                 <tr key={index}>
                   <td>{item.name}</td>
+
+
                   {new Date(item.enterTime).getMinutes() < 10 ? (
                     <td>{`${new Date(item.enterTime).getHours()}:0${new Date(
                       item.enterTime
@@ -84,6 +95,8 @@ const Index = () => {
                     <td>{`${new Date(item.enterTime).getHours()}:${new Date(
                       item.enterTime
                     ).getMinutes()}`}</td>
+
+
                   )}
                 </tr>
               ))}
@@ -100,6 +113,7 @@ const Index = () => {
               </tr>
             </thead>
             <tbody>
+
               {nowEntryUsers.map((item: any, index) => (
                 <tr key={index}>
                   {item.exitTime !== "NaN" &&
@@ -122,6 +136,8 @@ const Index = () => {
                     )
                   ) : (
                     <td></td>
+
+
                   )}
                 </tr>
               ))}
