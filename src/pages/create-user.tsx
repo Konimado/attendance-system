@@ -79,6 +79,7 @@ export default function CreateUser() {
         plan,
         startDate,
         statue: false,
+        id:num
       });
       router.push("/");
     }
