@@ -5,6 +5,8 @@ import {
   doc,
   Timestamp,
   updateDoc,
+  addDoc,
+  collection
 
 } from "firebase/firestore";
 
@@ -18,13 +20,15 @@ const getAirportAPI = async (_req: NextApiRequest, res: NextApiResponse) => {
       enterTime: Timestamp.fromDate(new Date()),
     });
   }
-    //statue:trueの場合は退場する
+    //statue:trueの場合は退場する、user-attendanceに打刻情報を保存
   else{
     const users_status = doc(db, "users", _req.body.id);
     await updateDoc(users_status, {
       statue: false,
       exitTime: Timestamp.fromDate(new Date()),
     });
+    
+
   }
 };
 

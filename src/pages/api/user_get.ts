@@ -25,13 +25,15 @@ import {
 // };
 
 const getAirportAPI = async (_req: NextApiRequest, res: NextApiResponse) => {
-  //idがある場合は指定idのuser情報を取得
-  // let users: EntryUsers[] = [];
-  let users: any = [];
+  // console.log("req", _req.body.id);
+//idがある場合は指定idのuser情報を取得
+  const user = [];
   if (_req.body.id) {
     const attendanceRef = doc(db, "users", _req.body.id);
     const docSnap = await getDoc(attendanceRef);
-    users.push(docSnap.data());
+    // console.log("doc", docSnap.data());
+    user.push(docSnap.data());
+    user.map((u)=>u.enterTime=u.enterTime.toDate())
   }
   //idがない場合は全user情報を取得
   else {

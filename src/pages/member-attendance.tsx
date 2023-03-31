@@ -43,9 +43,9 @@ export default function MemberAttendance() {
     //response.dataに指定userの情報が取得
     axios.post("/api/user_get", { id: id }).then((response) => {
       if (response.data[0]) {
-        console.log(response.data);
+        // console.log(response.data);
         const userInfo = response.data[0];
-        console.log(response.data[0].statue);
+        // console.log(response.data[0].statue);
         //statue:trueの場合はエラー文を出力
         if (response.data[0].statue) {
           setErrormessage("エラー！！既に入場しています。");
@@ -82,14 +82,21 @@ export default function MemberAttendance() {
     //状態をまず確認
     axios.post("/api/user_get", { id: id }).then((response) => {
       if (response.data[0]) {
-        console.log(response.data);
+        // console.log(response.data);
         const userInfo = response.data[0];
-        console.log(response.data[0].statue);
+
         //statue:trueの場合はstatue:falseを保存
+
         if (response.data[0].statue) {
           axios.post("/api/user_post", {
             id: id,
             statue: false,
+          });
+          //enterTimeとexitTimeをuser-attendanceに保存
+
+          axios.post("/api/member_attendance_post", {
+            id: id,
+            enterTime: response.data[0].enterTime,
           });
           setAttendanceTime(Time);
           setNotice(`${userInfo.name}さんが退場しました。`);
