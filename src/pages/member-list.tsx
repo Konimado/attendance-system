@@ -3,14 +3,17 @@ import { db } from "../firebase";
 import memberList from "../style/member-list.module.scss";
 import Layout from "../components/Layout";
 import Link from "next/link";
-import { useState } from "react";
+import { use, useState } from "react";
 
 export default function MemberList({ users }: { users: any }) {
   const [search, setSearch] = useState("");
   const [searchItem, setSearchItem] = useState([]);
   const [flag, setflag] = useState(true);
   const [showFlag, setShowFlag] = useState(false);
+  const [genderValue, setGenderValue] = useState("");
+  const [searchGenderItem, setSearchGenderItem] = useState([]);
   const usersItem = JSON.parse(users);
+  console.log(usersItem);
   const today = new Date();
 
   //userデータを取得
@@ -70,6 +73,42 @@ export default function MemberList({ users }: { users: any }) {
     setSearchItem(serchItems);
   };
 
+  //性別ソート
+  const genderChange = (e: any) => {
+    let serchGenderItems: any = [];
+    setSearchGenderItem([]);
+    usersItem.forEach((userSearch: any) => {
+      console.log("userSearch", userSearch);
+      let findGender = userSearch.gender;
+      if (0 <= findGender.search(e.target.value)) {
+        serchGenderItems.push(userSearch);
+        setflag(false);
+      } else {
+        setflag(false);
+      }
+    });
+    console.log("serchGenderItems", serchGenderItems);
+    setSearchItem(serchGenderItems);
+  };
+
+  //年齢ソート
+  const ageChange = (e: any) => {
+    let serchGenderItems: any = [];
+    setSearchGenderItem([]);
+    usersItem.forEach((userSearch: any) => {
+      console.log("userSearch", userSearch);
+      let findGender = userSearch.age;
+      if (0 <= findGender.search(e.target.value)) {
+        serchGenderItems.push(userSearch);
+        setflag(false);
+      } else {
+        setflag(false);
+      }
+    });
+    console.log("serchGenderItems", serchGenderItems);
+    setSearchItem(serchGenderItems);
+  };
+
   return (
     <Layout>
       <div className={memberList.searchGrupe}>
@@ -89,8 +128,34 @@ export default function MemberList({ users }: { users: any }) {
               <tr>
                 <th>ID</th>
                 <th>名前</th>
-                <th>性別</th>
-                <th>年齢</th>
+                <th>
+                  性別
+                  <select
+                    name="gender"
+                    id="select-gender"
+                    onChange={(e) => genderChange(e)}
+                  >
+                    <option value="">▼</option>
+                    <option value="1">男性</option>
+                    <option value="2">女性</option>
+                  </select>
+                </th>
+                <th>
+                  年齢
+                  <select
+                    name="age"
+                    id="select-age"
+                    onChange={(e) => ageChange(e)}
+                  >
+                    <option value="">▼</option>
+                    {usersItem.map((item: any) => {
+                      // <option value={item.age} key={item.id}>
+                      //   {item.age}歳
+                      // </option>;
+                      return <option key={item.id}>{item.age}</option>;
+                    })}
+                  </select>
+                </th>
                 <th>プラン名</th>
                 <th>会員登録日</th>
               </tr>
@@ -104,7 +169,7 @@ export default function MemberList({ users }: { users: any }) {
                       {item.name}
                     </Link>
                   </td>
-                  {item.gender === "male" ? <td>男性</td> : <td>女性</td>}
+                  {item.gender === "1" ? <td>男性</td> : <td>女性</td>}
                   <td>{`${item.age}歳`}</td>
                   <td>{item.plan}</td>
                   <td>{item.startDate}</td>
@@ -120,7 +185,18 @@ export default function MemberList({ users }: { users: any }) {
               <tr>
                 <th>ID</th>
                 <th>名前</th>
-                <th>性別</th>
+                <th>
+                  性別
+                  <select
+                    name="pref_cd"
+                    id="select-pref"
+                    onChange={(e) => genderChange(e)}
+                  >
+                    <option value="">▼</option>
+                    <option value="1">男性</option>
+                    <option value="2">女性</option>
+                  </select>
+                </th>
                 <th>年齢</th>
                 <th>プラン名</th>
                 <th>会員登録日</th>
@@ -135,7 +211,7 @@ export default function MemberList({ users }: { users: any }) {
                       {item.name}
                     </Link>
                   </td>
-                  {item.gender === "male" ? <td>男性</td> : <td>女性</td>}
+                  {item.gender === "1" ? <td>男性</td> : <td>女性</td>}
                   <td>{`${item.age}歳`}</td>
                   <td>{item.plan}</td>
                   <td>{item.startDate}</td>
