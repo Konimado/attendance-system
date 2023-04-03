@@ -149,9 +149,10 @@ export default function MemberList({ users }: { users: any }) {
                   >
                     <option value="">▼</option>
                     {usersItem.map((item: any) => {
-                      <option value={item.age} key={item.id}>
-                        {item.age}歳
-                      </option>;
+                      // <option value={item.age} key={item.id}>
+                      //   {item.age}歳
+                      // </option>;
+                      return <option key={item.id}>{item.age}</option>;
                     })}
                   </select>
                 </th>

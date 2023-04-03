@@ -24,6 +24,8 @@
     "typescript": "5.0.2"
   },
   "devDependencies": {
+    "chart.js": "^4.2.1",
+    "react-chartjs-2": "^5.2.0",
     "sass": "^1.59.3"
   }
 }
