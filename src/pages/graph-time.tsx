@@ -26,7 +26,7 @@ export default function App() {
   const [timesdeta, setTimesdeta] = useState([]);
   useEffect(() => {
     axios.get("/api/member_attendance_get").then((res) => {
-      console.log(res.data);
+
       const datam = res.data;
 
       let timedeta = {
@@ -67,7 +67,7 @@ export default function App() {
     });
   }, []);
 
-  console.log("set", timesdeta);
+  
   const options = {
     responsive: true,
     plugins: {
