@@ -6,6 +6,7 @@ import {
   getDocs,
   query,
   where,
+  Timestamp,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { useState } from "react";
@@ -97,6 +98,8 @@ export default function CreateUser() {
       startDate,
       statue: false,
       id: num,
+      enterTime:Timestamp.fromDate(new Date()),
+      exitTime:Timestamp.fromDate(new Date()),
     });
     router.push("/");
     }
