@@ -10,10 +10,8 @@ export default function MemberList({ users }: { users: any }) {
   const [searchItem, setSearchItem] = useState([]);
   const [flag, setflag] = useState(true);
   const [showFlag, setShowFlag] = useState(false);
-  const [genderValue, setGenderValue] = useState("");
-  const [searchGenderItem, setSearchGenderItem] = useState([]);
   const usersItem = JSON.parse(users);
-  console.log(usersItem);
+  // console.log(usersItem);
   const today = new Date();
 
   //userデータを取得
@@ -76,9 +74,7 @@ export default function MemberList({ users }: { users: any }) {
   //性別ソート
   const genderChange = (e: any) => {
     let serchGenderItems: any = [];
-    setSearchGenderItem([]);
     usersItem.forEach((userSearch: any) => {
-      console.log("userSearch", userSearch);
       let findGender = userSearch.gender;
       if (0 <= findGender.search(e.target.value)) {
         serchGenderItems.push(userSearch);
@@ -87,26 +83,31 @@ export default function MemberList({ users }: { users: any }) {
         setflag(false);
       }
     });
-    console.log("serchGenderItems", serchGenderItems);
     setSearchItem(serchGenderItems);
   };
 
   //年齢ソート
+  let sortAgeItem: any = [];
+  usersItem.map((item: any) => {
+    sortAgeItem.push(item.age);
+  });
+  sortAgeItem.sort(function (first: any, second: any) {
+    return first - second;
+  });
+  sortAgeItem = new Set(sortAgeItem);
+  const newArr = [...sortAgeItem];
   const ageChange = (e: any) => {
-    let serchGenderItems: any = [];
-    setSearchGenderItem([]);
+    let serchAgeItems: any = [];
     usersItem.forEach((userSearch: any) => {
-      console.log("userSearch", userSearch);
-      let findGender = userSearch.age;
-      if (0 <= findGender.search(e.target.value)) {
-        serchGenderItems.push(userSearch);
+      let findAge = `${userSearch.age}`;
+      if (0 <= findAge.search(`${e.target.value}`)) {
+        serchAgeItems.push(userSearch);
         setflag(false);
       } else {
         setflag(false);
       }
     });
-    console.log("serchGenderItems", serchGenderItems);
-    setSearchItem(serchGenderItems);
+    setSearchItem(serchAgeItems);
   };
 
   return (
@@ -148,15 +149,29 @@ export default function MemberList({ users }: { users: any }) {
                     onChange={(e) => ageChange(e)}
                   >
                     <option value="">▼</option>
-                    {usersItem.map((item: any) => {
-                      // <option value={item.age} key={item.id}>
-                      //   {item.age}歳
-                      // </option>;
-                      return <option key={item.id}>{item.age}</option>;
+                    {newArr.map((item) => {
+                      return (
+                        <option value={item} key={item}>
+                          {item}
+                        </option>
+                      );
                     })}
                   </select>
                 </th>
-                <th>プラン名</th>
+                <th>
+                  プラン名
+                  <select
+                    name="gender"
+                    id="select-gender"
+                    onChange={(e) => genderChange(e)}
+                  >
+                    <option value="">▼</option>
+                    <option value="1">24時間</option>
+                    <option value="2">日中</option>
+                    <option value="3">平日</option>
+                    <option value="4">土日</option>
+                  </select>
+                </th>
                 <th>会員登録日</th>
               </tr>
             </thead>
@@ -197,7 +212,23 @@ export default function MemberList({ users }: { users: any }) {
                     <option value="2">女性</option>
                   </select>
                 </th>
-                <th>年齢</th>
+                <th>
+                  年齢
+                  <select
+                    name="age"
+                    id="select-age"
+                    onChange={(e) => ageChange(e)}
+                  >
+                    <option value="">▼</option>
+                    {newArr.map((item) => {
+                      return (
+                        <option value={item} key={item}>
+                          {item}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </th>
                 <th>プラン名</th>
                 <th>会員登録日</th>
               </tr>
