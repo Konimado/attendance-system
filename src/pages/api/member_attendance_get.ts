@@ -9,9 +9,13 @@ const getAirportAPI = async (_req: NextApiRequest, res: NextApiResponse) => {
   const user= [];
   querySnapshot.forEach((doc) => {
     const userdata = doc.data();
-    // console.log("userdata",userdata)
+   
     user.push(userdata);
   });
+  user.map((user)=>{
+    user.enterTime = user.enterTime.toDate();
+    user.exitTime = user.exitTime.toDate();
+  })
 
   return res.status(200).json(user);
 };
