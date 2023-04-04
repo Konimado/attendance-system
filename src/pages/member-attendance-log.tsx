@@ -8,9 +8,11 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { useRef, useState } from "react";
+import { fetchUsers } from "@/types/fetchUsers";
+import { fetchmemberattendance } from "@/types/member-attendance";
 
-export const getServerSideProps = async (id) => {
-  const user: any = [];
+export const getServerSideProps = async (id: { query: { id: number; }; }) => {
+  const user:fetchmemberattendance[]  = [];
   const useRef = collection(db, "users-attendance");
   const q = query(useRef, where("id", "==", `${id.query.id}`));
   const querySnapshot = await getDocs(q);
@@ -18,7 +20,7 @@ export const getServerSideProps = async (id) => {
     user.push(doc.data());
   });
 
-  user.map((u: any) => {
+  user.map((u) => {
     u.enterTime = u.enterTime.toDate();
     u.exitTime = u.exitTime.toDate();
   });

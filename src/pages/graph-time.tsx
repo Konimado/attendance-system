@@ -28,7 +28,10 @@ export default function App() {
     axios.get("/api/member_attendance_get").then((res) => {
 
       const datam = res.data;
+    //  console.log("datam",datam.enterTime)
+     console.log("datam",datam)
 
+     
       let timedeta = {
         "1": 0,
         "2": 0,

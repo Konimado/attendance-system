@@ -1,18 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "../../firebase";
-import {
-
-  doc,
-  Timestamp,
-  updateDoc,
-  addDoc,
-  collection
-
-} from "firebase/firestore";
+import { doc, Timestamp, updateDoc } from "firebase/firestore";
 
 const getAirportAPI = async (_req: NextApiRequest, res: NextApiResponse) => {
-
-    //statue:trueの場合は入場する
+  //statue:trueの場合は入場する
   if (_req.body.statue) {
     const users_status = doc(db, "users", _req.body.id);
     await updateDoc(users_status, {
@@ -20,15 +11,13 @@ const getAirportAPI = async (_req: NextApiRequest, res: NextApiResponse) => {
       enterTime: Timestamp.fromDate(new Date()),
     });
   }
-    //statue:trueの場合は退場する、user-attendanceに打刻情報を保存
-  else{
+  //statue:trueの場合は退場する、user-attendanceに打刻情報を保存
+  else {
     const users_status = doc(db, "users", _req.body.id);
     await updateDoc(users_status, {
       statue: false,
       exitTime: Timestamp.fromDate(new Date()),
     });
-    
-
   }
 };
 
