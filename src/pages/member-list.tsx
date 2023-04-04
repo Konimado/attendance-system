@@ -116,7 +116,7 @@ export default function MemberList({ users }: { users: any }) {
   };
 
   //年齢ソート
-  const ageChange = (e: any) => {
+  const ageChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "0") {
       setSearchItem(usersItem);
     } else {

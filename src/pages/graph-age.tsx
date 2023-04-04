@@ -78,7 +78,17 @@ export default function ChartBar() {
         item.age = age;
       });
 
-      let agedata = { "1": 0, "2": 0, "3": 0,"4": 0, "5": 0, "6": 0 ,"7": 0 ,"8": 0 ,"9": 0  };
+      let agedata = {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+      };
       console.log(userdata);
       // console.log(userdata.filter((x)=>x.age===26).length)
       for (let key of userdata) {
@@ -86,39 +96,50 @@ export default function ChartBar() {
           (x) => Math.floor(x.age / 10) === Math.floor(key.age / 10)
         ).length;
       }
-setAge(Object.values(agedata))
+      setAge(Object.values(agedata));
       console.log(Object.values(agedata));
     });
   }, []);
 
   const today = new Date();
 
-const options = {
-  indexAxis: "y" as const,
-  responsive: true,
-  plugins: {
-    legend: {
-      position: "right" as const,
+  const options = {
+    indexAxis: "y" as const,
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "right" as const,
+      },
+      title: {
+        display: true,
+        text: "年齢別会員数",
+      },
     },
-    title: {
-      display: true,
-      text: "年齢別会員数",
-    },
-  },
-};
+  };
 
-const labels = ["10歳未満","10代", "20代", "30代", "40代", "50代", "60代", "70代", "80代", "90代"];
+  const labels = [
+    "10歳未満",
+    "10代",
+    "20代",
+    "30代",
+    "40代",
+    "50代",
+    "60代",
+    "70代",
+    "80代",
+    "90代",
+  ];
 
-const data = {
-  labels, // x軸のラベルの配列
-  datasets: [
-    {
-      label: "Dataset 1",
-      data: age, // データの配列(labelsと要素数同じ)
-      backgroundColor: "rgba(255, 99, 132, 0.5)", // グラフの棒の色
-    },
-  ],
-};
+  const data = {
+    labels, // x軸のラベルの配列
+    datasets: [
+      {
+        label: "Dataset 1",
+        data: age, // データの配列(labelsと要素数同じ)
+        backgroundColor: "rgba(255, 99, 132, 0.5)", // グラフの棒の色
+      },
+    ],
+  };
 
   return (
     <>
