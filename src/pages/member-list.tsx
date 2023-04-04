@@ -1,11 +1,27 @@
-import { getDocs, collection } from "firebase/firestore";
+import { getDocs, collection, DocumentData } from "firebase/firestore";
 import { db } from "../firebase";
 import memberList from "../style/member-list.module.scss";
 import Layout from "../components/Layout";
 import Link from "next/link";
 import { useState } from "react";
-import { Users } from "@/types/user";
 import { fetchUsers } from "../types/fetchUsers";
+
+type UsersItem = {
+  address: string;
+  birth: string;
+  enterTime: string;
+  exitTime: string;
+  gender: string;
+  id: string;
+  mailAddress: string;
+  name: string;
+  phoneNumber: string;
+  plan: string;
+  postalCode: string;
+  startDate: string;
+  statue: boolean;
+  age: number;
+};
 
 export default function MemberList({ users }: { users: string }) {
   //会員データ取得
@@ -18,9 +34,8 @@ export default function MemberList({ users }: { users: string }) {
   const [searchItem, setSearchItem] = useState(usersItem);
   const [flag, setflag] = useState(true);
   const [showFlag, setShowFlag] = useState(false);
-  // console.log(usersItem);
   //会員データに年齢追加/プラン名変更
-  usersItem.map((item: Users) => {
+  usersItem.map((item: UsersItem) => {
     //ageオブジェクトを作成
     const birthday = {
       year: new Date(item.birth).getFullYear(),
@@ -54,12 +69,13 @@ export default function MemberList({ users }: { users: string }) {
   });
 
   //年齢select
-  let sortAgeItem: any = [];
-  searchItem.map((item: any) => {
+  let sortAgeItem: number[] = [];
+  let setSortAgeItem: object = [];
+  searchItem.map((item: UsersItem) => {
     sortAgeItem.push(item.age);
   });
-  let newArrItem: any = [];
-  sortAgeItem.map((item: any) => {
+  let newArrItem: number[] = [];
+  sortAgeItem.map((item: number) => {
     let itemAge = Math.floor(item / 10);
     if (itemAge < 1) {
       newArrItem.push(0);
@@ -69,22 +85,21 @@ export default function MemberList({ users }: { users: string }) {
     return Math.floor(item / 10);
   });
   //重複削除
-  sortAgeItem = new Set(newArrItem);
+  setSortAgeItem = new Set(newArrItem);
   const newArr = [...sortAgeItem];
   // 年齢低い順
-  newArr.sort(function (first: any, second: any) {
+  newArr.sort(function (first: number, second: number) {
     return first - second;
   });
 
   //検索機能
   const getSearchItem = () => {
-    let serchItems: any = [];
+    let serchItems: UsersItem[] = [];
     setSearchItem([]);
     setShowFlag(false);
-    usersItem.forEach((userSearch: any) => {
+    usersItem.forEach((userSearch: UsersItem) => {
       let findName = userSearch.name;
       if (0 <= findName.search(search)) {
-        // setSearchItem([userSearch]);
         serchItems.push(userSearch);
         setflag(false);
       } else {
@@ -100,12 +115,12 @@ export default function MemberList({ users }: { users: string }) {
   };
 
   //性別ソート
-  const genderChange = (e: any) => {
+  const genderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "0") {
       setSearchItem(usersItem);
     } else {
-      let serchGenderItems: any = [];
-      searchItem.forEach((userSearch: any) => {
+      let serchGenderItems: UsersItem[] = [];
+      searchItem.forEach((userSearch: UsersItem) => {
         let findGender = userSearch.gender;
         if (0 <= findGender.search(e.target.value)) {
           serchGenderItems.push(userSearch);
@@ -123,8 +138,8 @@ export default function MemberList({ users }: { users: string }) {
     if (e.target.value === "0") {
       setSearchItem(usersItem);
     } else {
-      let serchAgeItems: any = [];
-      searchItem.forEach((userSearch: any) => {
+      let serchAgeItems: UsersItem[] = [];
+      searchItem.forEach((userSearch: UsersItem) => {
         let userSearchAge = `${Math.floor(userSearch.age / 10)}`;
         if (userSearchAge < "1") {
           userSearchAge = "0";
@@ -144,12 +159,12 @@ export default function MemberList({ users }: { users: string }) {
   };
 
   //プランソート
-  const planChange = (e: any) => {
+  const planChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "0") {
       setSearchItem(usersItem);
     } else {
-      let serchPlanItems: any = [];
-      searchItem.forEach((userSearch: any) => {
+      let serchPlanItems: UsersItem[] = [];
+      searchItem.forEach((userSearch: UsersItem) => {
         let findPlan = userSearch.plan;
         if (0 <= findPlan.search(e.target.value)) {
           serchPlanItems.push(userSearch);
@@ -163,21 +178,22 @@ export default function MemberList({ users }: { users: string }) {
   };
 
   //登録日ソート
-  let sortStartDateItem: any = [];
-  searchItem.map((item: any) => {
+  let sortStartDateItem: number[] = [];
+  let steSortStartDateItem: object = [];
+  searchItem.map((item: UsersItem) => {
     sortStartDateItem.push(new Date(item.startDate).getFullYear());
   });
-  sortStartDateItem.sort(function (first: any, second: any) {
+  sortStartDateItem.sort(function (first: number, second: number) {
     return first - second;
   });
-  sortStartDateItem = new Set(sortStartDateItem);
+  steSortStartDateItem = new Set(sortStartDateItem);
   const newStartDateItem = [...sortStartDateItem];
-  const startDateChange = (e: any) => {
+  const startDateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "0") {
       setSearchItem(usersItem);
     } else {
-      let serchDtartDateItems: any = [];
-      searchItem.forEach((userSearch: any) => {
+      let serchDtartDateItems: UsersItem[] = [];
+      searchItem.forEach((userSearch: UsersItem) => {
         let findAge = `${userSearch.startDate}`;
         if (0 <= findAge.search(`${e.target.value}`)) {
           serchDtartDateItems.push(userSearch);
@@ -272,7 +288,7 @@ export default function MemberList({ users }: { users: string }) {
               </tr>
             </thead>
             <tbody>
-              {usersItem.map((item: any) => (
+              {usersItem.map((item: UsersItem) => (
                 <tr key={item.id}>
                   <td>{item.id}</td>
                   <td>
@@ -359,7 +375,7 @@ export default function MemberList({ users }: { users: string }) {
               </tr>
             </thead>
             <tbody>
-              {searchItem.map((item: any) => (
+              {searchItem.map((item: UsersItem) => (
                 <tr key={item.id}>
                   <td>{item.id}</td>
                   <td>
