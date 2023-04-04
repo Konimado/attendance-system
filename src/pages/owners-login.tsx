@@ -16,9 +16,9 @@ export default function OwnersLogin() {
     signInWithEmailAndPassword(auth, mailAddress, password)
       .then((userCredential) => {
         // Signed in
-        const user = userCredential.user;
+        userCredential.user;
       })
-      .catch((error) => {
+      .catch((_error) => {
         setErrorMessage("※メールアドレスまたはパスワードが間違っています");
       });
   };
@@ -52,7 +52,9 @@ export default function OwnersLogin() {
         </div>
 
         <p>{errorMessage}</p>
-        <button className={ownersLogin.button} onClick={buttonSignIn}>ログイン</button>
+        <button className={ownersLogin.button} onClick={buttonSignIn}>
+          ログイン
+        </button>
       </main>
     </Layout>
   );

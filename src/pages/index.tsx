@@ -4,63 +4,48 @@ import Time from "../function/time";
 import index from "../style/index.module.scss";
 import axios from "axios";
 import Router from "next/router";
-
-// type EntryUsers = {
-//   address?: string;
-//   birth?: string;
-//   enterTime: number;
-//   exitTime: number;
-//   gender?: string;
-//   mailAddress?: string;
-//   name?: string;
-//   phoneNumber?: string;
-//   plan?: string;
-//   postalCode?: string;
-//   startDate?: string;
-//   statue?: boolean;
-// };
+import { Users } from "../types/user";
+import { User } from "firebase/auth";
 
 //入場
 const Index = () => {
-  const [nowEntryUsers, setNowEntryUsers] = useState([]);
-  const [nowExitUsers, setNowExitUsers] = useState([]);
-  // const mapEntryUsers: EntryUsers[] = [];
-  const mapEntryUsers: any = [];
-  const mapExitUsers: any = [];
+  const [nowEntryUsers, setNowEntryUsers] = useState<Users[]>([]);
 
   useEffect(() => {
     //データベースからデータを取得する(attendance情報)
-
     axios
       .post("/api/user_get", { order: "order" })
       .then((response) => {
         //現在時刻取得
         const time = Time();
         const nowTime = `${time.year}/${time.mon}/${time.day}`;
-        // const nowEntries = JSON.parse(response.data);
         const nowEntries = response.data;
         //現在入場者情報取得
-        // const nowEntryUsersItem = nowEntries.filter((nowEntry) => {
-        const nowEntryUsersItem: any = nowEntries.filter((nowEntry: any) => {
-          if (nowEntry.enterTime) {
-            // const entrydate = nowEntry.enterTime.toDate();
-            const entrydate = new Date(nowEntry.enterTime);
-            const entryYear = entrydate.getFullYear();
-            const entryMonth = entrydate.getMonth();
-            const entryDate = entrydate.getDate();
-            const entryTime = `${entryYear}/${entryMonth + 1}/${entryDate}`;
-            return entryTime === nowTime;
+        // console.log(nowEntries);
+        const nowEntryUsersItem: Users[] = nowEntries.filter(
+          (nowEntry: Users) => {
+            if (nowEntry.enterTime) {
+              const entrydate = new Date(nowEntry.enterTime);
+              const entryYear = entrydate.getFullYear();
+              const entryMonth = entrydate.getMonth();
+              const entryDate = entrydate.getDate();
+              const entryTime = `${entryYear}/${entryMonth + 1}/${entryDate}`;
+              return entryTime === nowTime;
+            }
           }
-        });
+        );
+        console.log(nowEntryUsersItem);
         setNowEntryUsers(nowEntryUsersItem);
       })
-      .catch(function (error) {
+      .catch(function (_error) {
         Router.push("/");
       });
 
     //warningを解消する為,ESLintのルールを無効
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  console.log("nowEntryUsers", nowEntryUsers);
 
   return (
     <Layout>
@@ -75,7 +60,7 @@ const Index = () => {
               </tr>
             </thead>
             <tbody>
-              {nowEntryUsers.map((item: any, index) => (
+              {nowEntryUsers.map((item: Users, index) => (
                 <tr key={index}>
                   <td>{item.name}</td>
 
@@ -103,7 +88,7 @@ const Index = () => {
               </tr>
             </thead>
             <tbody>
-              {nowEntryUsers.map((item: any, index) => (
+              {nowEntryUsers.map((item: Users, index) => (
                 <tr key={index}>
                   {item.exitTime !== "NaN" &&
                   item.exitTime.split("T")[0] ===
