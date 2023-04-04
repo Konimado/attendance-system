@@ -21,7 +21,6 @@ const Index = () => {
         const nowTime = `${time.year}/${time.mon}/${time.day}`;
         const nowEntries = response.data;
         //現在入場者情報取得
-        // console.log(nowEntries);
         const nowEntryUsersItem: Users[] = nowEntries.filter(
           (nowEntry: Users) => {
             if (nowEntry.enterTime) {
@@ -34,7 +33,6 @@ const Index = () => {
             }
           }
         );
-        console.log(nowEntryUsersItem);
         setNowEntryUsers(nowEntryUsersItem);
       })
       .catch(function (_error) {
@@ -44,8 +42,6 @@ const Index = () => {
     //warningを解消する為,ESLintのルールを無効
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.log("nowEntryUsers", nowEntryUsers);
 
   return (
     <Layout>
