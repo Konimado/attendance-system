@@ -4,8 +4,10 @@ import memberList from "../style/member-list.module.scss";
 import Layout from "../components/Layout";
 import Link from "next/link";
 import { useState } from "react";
+import { Users } from "@/types/user";
+import { fetchUsers } from "../types/fetchUsers";
 
-export default function MemberList({ users }: { users: any }) {
+export default function MemberList({ users }: { users: string }) {
   //会員データ取得
   const usersItem = JSON.parse(users);
   //現在時刻取得
@@ -16,8 +18,9 @@ export default function MemberList({ users }: { users: any }) {
   const [searchItem, setSearchItem] = useState(usersItem);
   const [flag, setflag] = useState(true);
   const [showFlag, setShowFlag] = useState(false);
+  // console.log(usersItem);
   //会員データに年齢追加/プラン名変更
-  usersItem.map((item: any) => {
+  usersItem.map((item: Users) => {
     //ageオブジェクトを作成
     const birthday = {
       year: new Date(item.birth).getFullYear(),
@@ -116,7 +119,7 @@ export default function MemberList({ users }: { users: any }) {
   };
 
   //年齢ソート
-  const ageChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
+  const ageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "0") {
       setSearchItem(usersItem);
     } else {
@@ -380,7 +383,7 @@ export default function MemberList({ users }: { users: any }) {
 }
 
 export async function getStaticProps() {
-  let users: any = [];
+  let users: fetchUsers[] = [];
   const usersItem = await getDocs(collection(db, "users"));
   usersItem.forEach((doc) => {
     const userdata = doc.data();

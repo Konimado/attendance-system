@@ -1,17 +1,7 @@
-import {
-  addDoc,
-  collection,
-  doc,
-  Timestamp,
-  updateDoc,
-  getDoc,
-} from "firebase/firestore";
-import { db } from "../firebase";
 import { useState } from "react";
 import styles from "../style/user-attendance.module.scss";
 import Layout from "@/components/Layout";
 import Times from "@/function/time";
-import useSWR from "swr";
 import axios from "axios";
 
 export default function MemberAttendance() {
