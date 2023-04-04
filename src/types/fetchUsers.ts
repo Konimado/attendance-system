@@ -1,8 +1,8 @@
 type fetchUsers = {
   address?: string;
   birth?: string;
-  enterTime?: { seconds: number; nanoseconds: number };
-  exitTime?: { seconds: number; nanoseconds: number };
+  enterTime?:any;
+  exitTime?: any;
   gender?: string;
   id?: string;
   mailAddress?: string;
