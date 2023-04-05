@@ -32,14 +32,13 @@ const getAirportAPI = async (_req: NextApiRequest, res: NextApiResponse) => {
   if (_req.body.id) {
     const attendanceRef = doc(db, "users", _req.body.id);
     const docSnap = await getDoc(attendanceRef);
-
+    if (!docSnap.exists()) return;
     console.log("doc", docSnap.data());
     user.push(docSnap.data());
     //このif分がないと会員番号が存在しない場合はエラーになってしまう
-    if(user[0].enterTime){
+    if (user[0].enterTime) {
       user.map((u) => (u.enterTime = u.enterTime.toDate()));
     }
-
   }
   //idがない場合は全user情報を取得
   else {
@@ -50,7 +49,7 @@ const getAirportAPI = async (_req: NextApiRequest, res: NextApiResponse) => {
       await getDocs(querySnapshot).then((snapShot) => {
         const userdata = snapShot.docs.map((doc) => doc.data());
         user = user.concat(userdata);
-        user.map((user:fetchUsers) => {
+        user.map((user: fetchUsers) => {
           if (user.enterTime && user.exitTime) {
             user.enterTime = user.enterTime.toDate();
             user.exitTime = user.exitTime.toDate();
