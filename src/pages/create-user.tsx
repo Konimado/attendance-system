@@ -98,8 +98,7 @@ export default function CreateUser() {
       startDate,
       statue: false,
       id: num,
-      enterTime:Timestamp.fromDate(new Date()),
-      exitTime:Timestamp.fromDate(new Date()),
+  
     });
     router.push("/");
     }

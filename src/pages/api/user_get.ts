@@ -36,7 +36,7 @@ const getAirportAPI = async (_req: NextApiRequest, res: NextApiResponse) => {
     console.log("doc", docSnap.data());
     user.push(docSnap.data());
     //このif分がないと会員番号が存在しない場合はエラーになってしまう
-    if(user[0]){
+    if(user[0].enterTime){
       user.map((u) => (u.enterTime = u.enterTime.toDate()));
     }
 
