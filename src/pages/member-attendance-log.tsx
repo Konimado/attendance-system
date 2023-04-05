@@ -1,16 +1,21 @@
 import Layout from "@/components/Layout";
-import useSWR from "swr";
-import {
-  getDocs,
-  collection,
-  where,
-  query,
-} from "firebase/firestore";
+
+import { getDocs, collection, where, query } from "firebase/firestore";
 import { db } from "../firebase";
 import { useRef, useState } from "react";
+import { fetchmemberattendance } from "@/types/member-attendance";
 
-export const getServerSideProps = async (id) => {
-  const user: any = [];
+
+
+type tofetchmemberattendance = {
+  enterTime?: any;
+  exitTime?: any;
+  id?: number;
+  date:any;
+  week:string
+};
+export const getServerSideProps = async (id: { query: { id: number } }) => {
+  const user: fetchmemberattendance[] = [];
   const useRef = collection(db, "users-attendance");
   const q = query(useRef, where("id", "==", `${id.query.id}`));
   const querySnapshot = await getDocs(q);
@@ -18,37 +23,33 @@ export const getServerSideProps = async (id) => {
     user.push(doc.data());
   });
 
-  user.map((u: any) => {
+  user.map((u) => {
     u.enterTime = u.enterTime.toDate();
     u.exitTime = u.exitTime.toDate();
   });
 
   return {
     props: {
-      //javascriptオブジェクト
+      //javascriptオブジェクト(タイムスタンプをシリアライズする必要がある)
       data: JSON.stringify(user),
     },
   };
 };
 
-export default function MemberAttendanceLog({ data }) {
+export default function MemberAttendanceLog({ data }: { data: string }) {
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
-
   if (!data) return;
   const datam = JSON.parse(data);
   //取得したデータに新たなオブジェクトdateを追加して00/00の形で保存
-  datam.map((t) => {
+  datam.map((t:tofetchmemberattendance) => {
     t.date = `${new Date(t.enterTime).getMonth() + 1}/${new Date(
       t.enterTime
     ).getDate()}`;
   });
 
   //最終日計算
-  let lastday = new Date(year, month, 0);
-  //最終日の日付のみ
-  lastday = lastday.getDate();
-
+  let lastday = new Date(year, month, 0).getDate();
 
   let date = [];
   for (var i = 1; i <= lastday; i++) {
@@ -59,8 +60,7 @@ export default function MemberAttendanceLog({ data }) {
     date.push({ day: `${month}/${i}`, date: i, weeks: weeks });
   }
 
-
-  let datefinish = [];
+  let datefinish:tofetchmemberattendance[] = [];
   date.map((d) => {
     const filterdam = datam.filter((dm) => {
       return dm.date === d.day;
@@ -86,12 +86,12 @@ export default function MemberAttendanceLog({ data }) {
   //プルダウン用：1月〜12月
   let pulldownmonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-  const changeYear = (e) => {
+  const changeYear = (e: React.ChangeEvent<HTMLInputElement>) => {
     setYear(e.target.value);
   };
 
-  const changeMonth = (e) => {
-    console.log(e.target.value);
+  const changeMonth = (e: React.ChangeEvent<HTMLInputElement>) => {
+
     setMonth(e.target.value);
   };
 
@@ -145,14 +145,14 @@ export default function MemberAttendanceLog({ data }) {
                   {d.enterTime === ""
                     ? ""
                     : `${
-                      new Date(d.enterTime).getMinutes() < 10
-                        ? `${new Date(d.enterTime).getHours()}:0${new Date(
-                            d.enterTime
-                          ).getMinutes()}`
-                        : `${new Date(d.enterTime).getHours()}:${new Date(
-                            d.enterTime
-                          ).getMinutes()}`
-                    }`}
+                        new Date(d.enterTime).getMinutes() < 10
+                          ? `${new Date(d.enterTime).getHours()}:0${new Date(
+                              d.enterTime
+                            ).getMinutes()}`
+                          : `${new Date(d.enterTime).getHours()}:${new Date(
+                              d.enterTime
+                            ).getMinutes()}`
+                      }`}
                 </td>
                 <td>
                   {d.exitTime === ""

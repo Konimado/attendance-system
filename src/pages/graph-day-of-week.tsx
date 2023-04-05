@@ -26,51 +26,33 @@ export default function App() {
   const [timesdeta, setTimesdeta] = useState([]);
   useEffect(() => {
     axios.get("/api/member_attendance_get").then((res) => {
-
+      console.log(res.data);
       const datam = res.data;
-    //  console.log("datam",datam.enterTime)
-     console.log("datam",datam)
 
-     
-      let timedeta = {
+      let daydeta = {
         "1": 0,
         "2": 0,
         "3": 0,
         "4": 0,
         "5": 0,
         "6": 0,
-        "7": 0,
-        "8": 0,
-        "9": 0,
-        "10": 0,
-        "11": 0,
-        "13": 0,
-        "14": 0,
-        "15": 0,
-        "16": 0,
-        "17": 0,
-        "18": 0,
-        "19": 0,
-        "20": 0,
-        "21": 0,
-        "22": 0,
-        "23": 0,
-        "24": 0,
+        "7": 0
       };
 
+      console.log(new Date().getDay())
       for (let key of datam) {
-        timedeta[new Date(key.enterTime).getHours()] = datam.filter(
+        daydeta[new Date(key.enterTime).getDay()] = datam.filter(
           (x) =>
-            new Date(x.enterTime).getHours() ===
-            new Date(key.enterTime).getHours()
+            new Date(x.enterTime).getDay() ===
+            new Date(key.enterTime).getDay()
         ).length;
       }
   
-      setTimesdeta(Object.values(timedeta));
+      setTimesdeta(Object.values(daydeta));
     });
   }, []);
 
-  
+ 
   const options = {
     responsive: true,
     plugins: {
@@ -85,28 +67,13 @@ export default function App() {
   };
 
   const labels = [
-    "1:00-2:00",
-    "2:00-3:00",
-    "3:00-4:00",
-    "4:00-5:00",
-    "5:00-6:00",
-    "6:00-7:00",
-    "7:00-8:00",
-    "8:00-9:00",
-    "9:00-10:00",
-    "10:00-11:00",
-    "11:00-12:00",
-    "13:00-14:00",
-    "14:00-15:00",
-    "15:00-16:00",
-    "16:00-17:00",
-    "17:00-18:00",
-    "18:00-19:00",
-    "19:00-20:00",
-    "20:00-21:00",
-    "21:00-22:00",
-    "22:00-23:00",
-    "23:00-24:00",
+    "月",
+    "火",
+    "水",
+    "木",
+    "金",
+    "土",
+    "日",
   ];
 
   const data = {
