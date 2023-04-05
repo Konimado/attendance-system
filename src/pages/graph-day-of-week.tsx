@@ -11,6 +11,7 @@ import {
 import { Bar } from "react-chartjs-2";
 import Layout from "@/components/Layout";
 import axios from "axios";
+import { Memberattendance } from "@/types/member-attendance";
 
 
 ChartJS.register(
@@ -23,11 +24,11 @@ ChartJS.register(
 );
 
 export default function App() {
-  const [timesdeta, setTimesdeta] = useState([]);
+  const [timesdeta, setTimesdeta] = useState<number[]>([]);
   useEffect(() => {
     axios.get("/api/member_attendance_get").then((res) => {
       console.log(res.data);
-      const datam = res.data;
+      const datam:Memberattendance[] = res.data;
 
       let daydeta = {
         "1": 0,
@@ -41,7 +42,7 @@ export default function App() {
 
       console.log(new Date().getDay())
       for (let key of datam) {
-        daydeta[new Date(key.enterTime).getDay()] = datam.filter(
+        (daydeta as any)[new Date(key.enterTime).getDay()] = datam.filter(
           (x) =>
             new Date(x.enterTime).getDay() ===
             new Date(key.enterTime).getDay()

@@ -11,7 +11,8 @@ import {
 import { Bar } from "react-chartjs-2";
 import Layout from "@/components/Layout";
 import axios from "axios";
-
+import { time } from "console";
+import { Memberattendance } from "@/types/member-attendance";
 
 ChartJS.register(
   CategoryScale,
@@ -23,15 +24,38 @@ ChartJS.register(
 );
 
 export default function App() {
-  const [timesdeta, setTimesdeta] = useState([]);
+  const [timesdeta, setTimesdeta] = useState<number[]>([]);
   useEffect(() => {
     axios.get("/api/member_attendance_get").then((res) => {
-
       const datam = res.data;
-    //  console.log("datam",datam.enterTime)
-     console.log("datam",datam)
+      //  console.log("datam",datam.enterTime)
+      console.log("datam", datam);
 
-     
+      type Timedeta = {
+        "1": number;
+        "2": number;
+        "3": number;
+        "4": number;
+        "5": number;
+        "6": number;
+        "7": number;
+        "8": number;
+        "9": number;
+        "10": number;
+        "11": number;
+        "13": number;
+        "14": number;
+        "15": number;
+        "16": number;
+        "17": number;
+        "18": number;
+        "19": number;
+        "20": number;
+        "21": number;
+        "22": number;
+        "23": number;
+        "24": number;
+      };
       let timedeta = {
         "1": 0,
         "2": 0,
@@ -56,21 +80,20 @@ export default function App() {
         "22": 0,
         "23": 0,
         "24": 0,
-      };
+      } as Timedeta;
 
-      for (let key of datam) {
-        timedeta[new Date(key.enterTime).getHours()] = datam.filter(
-          (x) =>
+      for (let keys of datam) {
+        (timedeta as any)[new Date(keys.enterTime).getHours() as keyof string] = datam.filter(
+          (x:Memberattendance) =>
             new Date(x.enterTime).getHours() ===
-            new Date(key.enterTime).getHours()
+            new Date(keys.enterTime).getHours()
         ).length;
       }
-  
+console.log
       setTimesdeta(Object.values(timedeta));
     });
   }, []);
 
-  
   const options = {
     responsive: true,
     plugins: {

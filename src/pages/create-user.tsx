@@ -193,8 +193,8 @@ export default function CreateUser() {
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
                       className={styles.input}
-                      cols="70"
-                      rows="1"
+                      cols={70}
+                      rows={1}
                     />
                   </div>
                   <div className={styles.errormessage}>
