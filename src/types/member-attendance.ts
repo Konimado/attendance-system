@@ -1,15 +1,17 @@
 
 //toDateに相当する型がないのでany
-type fetchmemberattendance = {
+type Fetchmemberattendance = {
   enterTime?: any;
   exitTime?: any;
   id?: number;
 };
 
-type memberattendance = {
+type Memberattendance = {
   enterTime: string;
   exitTime: string;
   id?: number;
+  date:string,
+  week:string
 };
 
-export type {fetchmemberattendance};
+export type {Fetchmemberattendance,Memberattendance};
