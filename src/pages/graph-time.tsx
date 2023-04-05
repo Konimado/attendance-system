@@ -43,6 +43,8 @@ export default function App() {
         "9": number;
         "10": number;
         "11": number;
+        "12": number;
+
         "13": number;
         "14": number;
         "15": number;
@@ -68,6 +70,7 @@ export default function App() {
         "9": 0,
         "10": 0,
         "11": 0,
+        "12": 0,
         "13": 0,
         "14": 0,
         "15": 0,
@@ -83,13 +86,14 @@ export default function App() {
       } as Timedeta;
 
       for (let keys of datam) {
-        (timedeta as any)[new Date(keys.enterTime).getHours() as keyof string] = datam.filter(
-          (x:Memberattendance) =>
-            new Date(x.enterTime).getHours() ===
-            new Date(keys.enterTime).getHours()
-        ).length;
+        (timedeta as any)[new Date(keys.enterTime).getHours() as keyof string] =
+          datam.filter(
+            (x: Memberattendance) =>
+              new Date(x.enterTime).getHours() ===
+              new Date(keys.enterTime).getHours()
+          ).length;
       }
-console.log
+      console.log;
       setTimesdeta(Object.values(timedeta));
     });
   }, []);
