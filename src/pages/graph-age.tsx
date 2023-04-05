@@ -12,6 +12,7 @@ import { Bar } from "react-chartjs-2";
 import Layout from "@/components/Layout";
 import axios from "axios";
 import { useState } from "react";
+import { Users, UsersAddAge } from "../types/user";
 
 ChartJS.register(
   CategoryScale,
@@ -50,12 +51,11 @@ ChartJS.register(
 // };
 
 export default function ChartBar() {
-  const [age, setAge] = useState([]);
+  const [age, setAge] = useState<number[]>([]);
 
   useEffect(() => {
     axios.get("/api/user_get").then((response) => {
-      // console.log(response.data)
-      const userdata = response.data;
+      const userdata: UsersAddAge[] = response.data;
 
       userdata.map((item) => {
         const birthday = {
@@ -89,16 +89,17 @@ export default function ChartBar() {
         "8": 0,
         "9": 0,
       };
-      console.log(userdata);
-      // console.log(userdata.filter((x)=>x.age===26).length)
+
       for (let key of userdata) {
-        agedata[Math.floor(key.age / 10)] = userdata.filter(
+        (agedata as any)[Math.floor(key.age / 10)] = userdata.filter(
           (x) => Math.floor(x.age / 10) === Math.floor(key.age / 10)
         ).length;
       }
       setAge(Object.values(agedata));
       console.log(Object.values(agedata));
     });
+    //warningを解消する為,ESLintのルールを無効
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const today = new Date();

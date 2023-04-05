@@ -1,21 +1,21 @@
 import Layout from "@/components/Layout";
-
 import { getDocs, collection, where, query } from "firebase/firestore";
 import { db } from "../firebase";
-import { useRef, useState } from "react";
-import { fetchmemberattendance } from "@/types/member-attendance";
-
-
+import { useState } from "react";
+import {
+  Fetchmemberattendance,
+  Memberattendance,
+} from "@/types/member-attendance";
 
 type tofetchmemberattendance = {
   enterTime?: any;
   exitTime?: any;
   id?: number;
-  date:any;
-  week:string
+  date: any;
+  week: string;
 };
 export const getServerSideProps = async (id: { query: { id: number } }) => {
-  const user: fetchmemberattendance[] = [];
+  const user: Fetchmemberattendance[] = [];
   const useRef = collection(db, "users-attendance");
   const q = query(useRef, where("id", "==", `${id.query.id}`));
   const querySnapshot = await getDocs(q);
@@ -38,11 +38,11 @@ export const getServerSideProps = async (id: { query: { id: number } }) => {
 
 export default function MemberAttendanceLog({ data }: { data: string }) {
   const [month, setMonth] = useState(new Date().getMonth() + 1);
-  const [year, setYear] = useState(new Date().getFullYear());
+  const [year, setYear] = useState<number>(new Date().getFullYear());
   if (!data) return;
-  const datam = JSON.parse(data);
+  const datam: Memberattendance[] = JSON.parse(data);
   //取得したデータに新たなオブジェクトdateを追加して00/00の形で保存
-  datam.map((t:tofetchmemberattendance) => {
+  datam.map((t) => {
     t.date = `${new Date(t.enterTime).getMonth() + 1}/${new Date(
       t.enterTime
     ).getDate()}`;
@@ -51,7 +51,12 @@ export default function MemberAttendanceLog({ data }: { data: string }) {
   //最終日計算
   let lastday = new Date(year, month, 0).getDate();
 
-  let date = [];
+  type Date = {
+    day: string;
+    date: number;
+    weeks: string;
+  };
+  let date: Date[] = [];
   for (var i = 1; i <= lastday; i++) {
     let xday = new Date(year, month, i);
     let xdays = xday.getDay();
@@ -60,7 +65,7 @@ export default function MemberAttendanceLog({ data }: { data: string }) {
     date.push({ day: `${month}/${i}`, date: i, weeks: weeks });
   }
 
-  let datefinish:tofetchmemberattendance[] = [];
+  let datefinish: tofetchmemberattendance[] = [];
   date.map((d) => {
     const filterdam = datam.filter((dm) => {
       return dm.date === d.day;
@@ -86,13 +91,12 @@ export default function MemberAttendanceLog({ data }: { data: string }) {
   //プルダウン用：1月〜12月
   let pulldownmonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-  const changeYear = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setYear(e.target.value);
+  const changeYear = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setYear(Number(e.target.value));
   };
 
-  const changeMonth = (e: React.ChangeEvent<HTMLInputElement>) => {
-
-    setMonth(e.target.value);
+  const changeMonth = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setMonth(Number(e.target.value));
   };
 
   return (
@@ -101,7 +105,14 @@ export default function MemberAttendanceLog({ data }: { data: string }) {
         <p>月次入退場データ</p>
 
         <form action="">
-          <select name="" id="" value={year} onChange={changeYear}>
+          <select
+            name=""
+            id=""
+            value={year}
+            onChange={(e) => {
+              changeYear(e);
+            }}
+          >
             {pulldownyear.map((y, index) => {
               return (
                 <option value={y} key={index}>
