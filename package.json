@@ -6,9 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "test": "jest --watch --verbose",
-    "test:ci": "jest --ci"
+    "lint": "next lint"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -32,8 +30,9 @@
     "typescript": "5.0.2"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
     "chart.js": "^4.2.1",
-    "msw": "^1.2.1",
     "react-chartjs-2": "^5.2.0",
     "sass": "^1.59.3"
   }
