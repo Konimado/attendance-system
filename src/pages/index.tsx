@@ -48,8 +48,6 @@ const Index = () => {
     <Layout>
       <>
         <h2 className={index.h2}>入場</h2>
-        <div className={index.h2}>入場</div>
-        <div></div>
         <div className={index.table}>
           <table>
             <thead>
