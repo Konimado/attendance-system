@@ -6,7 +6,6 @@ import {
   getDocs,
   query,
   where,
-  Timestamp,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { useState } from "react";
@@ -68,10 +67,10 @@ export default function CreateUser() {
     let num = ("000" + Math.floor(Math.random() * 10000)).substr(-4, 4);
     const useRef = collection(db, "users");
     let q = query(useRef, where("id", "==", num));
-   let querySnapshot = await getDocs(q);
- 
+    let querySnapshot = await getDocs(q);
+
     while (querySnapshot.docs.length !== 0) {
-      console.log("while")
+      console.log("while");
       num = ("000" + Math.floor(Math.random() * 10000)).substr(-4, 4);
       q = query(useRef, where("id", "==", num));
       querySnapshot = await getDocs(q);
@@ -86,21 +85,20 @@ export default function CreateUser() {
       error.plan === "" &&
       error.startDate === ""
     ) {
-    await setDoc(doc(db, "users", num), {
-      name,
-      birth,
-      postalCode,
-      address,
-      phoneNumber,
-      mailAddress,
-      gender,
-      plan,
-      startDate,
-      statue: false,
-      id: num,
-  
-    });
-    router.push("/");
+      await setDoc(doc(db, "users", num), {
+        name,
+        birth,
+        postalCode,
+        address,
+        phoneNumber,
+        mailAddress,
+        gender,
+        plan,
+        startDate,
+        statue: false,
+        id: num,
+      });
+      router.push("/");
     }
   };
 

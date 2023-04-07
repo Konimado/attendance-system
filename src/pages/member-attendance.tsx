@@ -28,12 +28,11 @@ export default function MemberAttendance() {
     if (!id) {
       return setErrormessage("会員番号を入力してください");
     }
-
     //状態をまず確認
     //response.dataに指定userの情報が取得
     axios.post("/api/user_get", { id: id }).then((response) => {
       if (response.data[0]) {
-        // console.log(response.data);
+        // console.log(response);
         const userInfo = response.data[0];
         // console.log(response.data[0].statue);
         //statue:trueの場合はエラー文を出力
@@ -48,6 +47,7 @@ export default function MemberAttendance() {
           });
           setAttendanceTime(Time);
           setNotice(`${userInfo.name}さんが入場しました。`);
+
           setTimenotice("3秒後にリセットされます");
           setTimeout(() => {
             setNotice("");
@@ -89,7 +89,7 @@ export default function MemberAttendance() {
             enterTime: response.data[0].enterTime,
           });
           setAttendanceTime(Time);
-          setNotice(`${userInfo.name}さんが退場しました。`);
+          setNotice(`${userInfo.name}さんが退場しました￥た。`);
           setTimenotice("3秒後にリセットされます");
           setTimeout(() => {
             setNotice("");
@@ -101,7 +101,7 @@ export default function MemberAttendance() {
         }
         //statue;falseの場合はエラー文を出力
         else {
-          setErrormessage("エラー！！既に入場しています。");
+          // setErrormessage("エラー！！既に入場しています。");
         }
       } else {
         setErrormessage("会員番号が間違っています");
@@ -127,6 +127,7 @@ export default function MemberAttendance() {
                   type="text"
                   value={id}
                   onChange={(e) => setId(e.target.value)}
+                  placeholder="memberid"
                 />
               </div>
             </label>
@@ -148,10 +149,11 @@ export default function MemberAttendance() {
             <span>{realTime}</span>
           </div>
           <div className={styles.attendance_notice}>
-            <p>{errormessage}</p>
-            <p>{notice}</p>
+            <p data-testid="error">{errormessage}</p>
+            <p data-testid="notice">{notice}</p>
+
             <span>{attendanceTime}</span>
-            <p>{timenotice}</p>
+            <p data-testid="timenotice">{timenotice}</p>
           </div>
         </div>
       </Layout>
