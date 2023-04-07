@@ -48,7 +48,7 @@ export default function MemberAttendance() {
           setAttendanceTime(Time);
           setNotice(`${userInfo.name}さんが入場しました。`);
 
-          setTimenotice("3秒後にリセットされます");
+          setTimenotice("3秒後にリセットされますss");
           setTimeout(() => {
             setNotice("");
             setAttendanceTime("");
