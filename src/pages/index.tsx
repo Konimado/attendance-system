@@ -19,13 +19,11 @@ const Index = () => {
         const time = Time();
         const nowTime = `${time.year}/${time.mon}/${time.day}`;
         const nowEntries = response.data;
-        console.log(nowEntries);
         //現在入場者情報取得
         const nowEntryUsersItem: Users[] = nowEntries.filter(
           (nowEntry: Users) => {
             if (nowEntry.enterTime) {
               const entrydate = new Date(nowEntry.enterTime);
-              console.log(entrydate);
               const entryYear = entrydate.getFullYear();
               const entryMonth = entrydate.getMonth();
               const entryDate = entrydate.getDate();
