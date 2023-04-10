@@ -22,6 +22,31 @@ afterEach(() => {
 afterAll(() => server.close());
 
 describe("member-attendance", () => {
+  // //入場ボタン押下時：IDのinputが空の時「会員番号を入力してください」表示
+  it("it render error msg if memberID don't input", async () => {
+    render(<MemberAttendance />);
+    await userEvent.click(screen.getAllByRole("button")[0]);
+    expect(await screen.findByTestId("error")).toHaveTextContent(
+      "会員番号を入力してください"
+    );
+  });
+
+  //入場ボタン押下時：IDが見つからない時「会員番号が間違っています」エラー表示
+  it("render error msg if memberID can't find", async () => {
+    render(<MemberAttendance />);
+    server.use(
+      rest.post("/api/user_get", (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json([]));
+      })
+    );
+    const inputValue = screen.getByPlaceholderText("memberid");
+    await userEvent.type(inputValue, "1234");
+    await userEvent.click(screen.getAllByRole("button")[0]);
+    expect(await screen.findByTestId("error")).toHaveTextContent(
+      "会員番号が間違っています"
+    );
+  });
+
   //入場ボタン押下時：すでに入場している時のエラー分表示
   it("render error msg if already enterd", async () => {
     render(<MemberAttendance />);
@@ -48,13 +73,10 @@ describe("member-attendance", () => {
     const inputValue = screen.getByPlaceholderText("memberid");
     await userEvent.type(inputValue, "1234");
     await userEvent.click(screen.getAllByRole("button")[0]);
-
     await waitFor(() => screen.getByTestId("notice"));
     expect(screen.getByTestId("notice")).toHaveTextContent(
       `太郎さんが入場しました。`
     );
-    // await waitFor(() => screen.getByTestId("timenotice"));
-
     expect(screen.getByTestId("timenotice")).toHaveTextContent(
       `3秒後にリセットされます`
     );
