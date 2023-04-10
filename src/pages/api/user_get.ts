@@ -32,11 +32,9 @@ const getAirportAPI = async (_req: NextApiRequest, res: NextApiResponse) => {
   if (_req.body.id) {
     const attendanceRef = doc(db, "users", _req.body.id);
     const docSnap = await getDoc(attendanceRef);
-    if (!docSnap.exists()) return;
-    console.log("doc", docSnap.data());
-    user.push(docSnap.data());
-    //このif分がないと会員番号が存在しない場合はエラーになってしまう
-    if (user[0].enterTime) {
+    if (docSnap.exists()) {
+      console.log("doc", docSnap.data());
+      user.push(docSnap.data());
       user.map((u) => (u.enterTime = u.enterTime.toDate()));
     }
   }
