@@ -32,7 +32,7 @@ export default function MemberAttendance() {
     //response.dataに指定userの情報が取得
     axios.post("/api/user_get", { id: id }).then((response) => {
       if (response.data[0]) {
-        // console.log(response);
+        console.log(response);
         const userInfo = response.data[0];
         // console.log(response.data[0].statue);
         //statue:trueの場合はエラー文を出力
@@ -58,8 +58,6 @@ export default function MemberAttendance() {
         }
       } else {
         setErrormessage("会員番号が間違っています");
-
-        // return Promise.reject(new Error("エラーです"));
       }
     });
   };
@@ -71,7 +69,7 @@ export default function MemberAttendance() {
     //状態をまず確認
     axios.post("/api/user_get", { id: id }).then((response) => {
       if (response.data[0]) {
-        // console.log(response.data);
+        console.log("deta", response.data);
         const userInfo = response.data[0];
 
         //statue:trueの場合はstatue:falseを保存
@@ -88,7 +86,7 @@ export default function MemberAttendance() {
             enterTime: response.data[0].enterTime,
           });
           setAttendanceTime(Time);
-          setNotice(`${userInfo.name}さんが退場しました￥た。`);
+          setNotice(`${userInfo.name}さんが退場しました。`);
           setTimenotice("3秒後にリセットされます");
           setTimeout(() => {
             setNotice("");
