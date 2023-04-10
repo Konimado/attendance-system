@@ -47,8 +47,7 @@ export default function MemberAttendance() {
           });
           setAttendanceTime(Time);
           setNotice(`${userInfo.name}さんが入場しました。`);
-
-          setTimenotice("3秒後にリセットされますss");
+          setTimenotice("3秒後にリセットされます");
           setTimeout(() => {
             setNotice("");
             setAttendanceTime("");
@@ -150,7 +149,7 @@ export default function MemberAttendance() {
           </div>
           <div className={styles.attendance_notice}>
             <p data-testid="error">{errormessage}</p>
-            <p data-testid="notice">{notice}</p>
+            <h2 data-testid="notice">{notice}</h2>
 
             <span>{attendanceTime}</span>
             <p data-testid="timenotice">{timenotice}</p>
