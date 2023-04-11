@@ -13,9 +13,18 @@ import axios from "axios";
 import styles from "../style/create-user.module.scss";
 import { useRouter } from "next/router";
 import Layout from "@/components/Layout";
+import Link from "next/link";
+// import { Link, Route, Routes, useLocation } from "react-router-dom";
+import Index from ".";
+
+// export const LocationDisplay = () => {
+//   // const location = useLocation();
+
+//   // return <div data-testid="location-display">{location.pathname}</div>;
+// };
 
 export default function CreateUser() {
-  const router = useRouter();
+  // const router = useRouter();
   const [name, setName] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [address, setAddress] = useState("");
@@ -44,6 +53,9 @@ export default function CreateUser() {
       .get(`https://api.zipaddress.net/?zipcode=${postalCode}`)
       .then((res) => {
         setAddress(res.data.data.fullAddress);
+      })
+      .catch(() => {
+        console.log("失敗");
       });
   };
 
@@ -150,7 +162,9 @@ export default function CreateUser() {
   return (
     <>
       <Layout>
-        <h1>会員登録</h1>
+        <Link href="/">
+          <button data-testid="home1">home1</button>
+        </Link>
         <div className={styles.contents}>
           <form onSubmit={CreateUser}>
             <div>
@@ -165,7 +179,9 @@ export default function CreateUser() {
                       onChange={(e) => setName(e.target.value)}
                     />
                   </div>
-                  <div className={styles.errormessage}>{errormessage.name}</div>
+                  <div className={styles.errormessage} data-testid="nameError">
+                    {errormessage.name}
+                  </div>
                 </div>
                 <div className={styles.label}>
                   郵便番号
@@ -195,7 +211,10 @@ export default function CreateUser() {
                       rows={1}
                     />
                   </div>
-                  <div className={styles.errormessage}>
+                  <div
+                    className={styles.errormessage}
+                    data-testid="addressError"
+                  >
                     {errormessage.address}
                   </div>
                 </div>
@@ -207,9 +226,13 @@ export default function CreateUser() {
                       value={phoneNumber}
                       onChange={(e) => setphoneNumber(e.target.value)}
                       className={styles.input}
+                      placeholder="phoneNumber"
                     />
                   </div>
-                  <div className={styles.errormessage}>
+                  <div
+                    className={styles.errormessage}
+                    data-testid="phoneNumberError"
+                  >
                     {errormessage.phoneNumber}
                   </div>
                 </div>
@@ -221,9 +244,13 @@ export default function CreateUser() {
                       value={mailAddress}
                       onChange={(e) => setMailAddress(e.target.value)}
                       className={styles.input}
+                      placeholder="mailAddress"
                     />
                   </div>
-                  <div className={styles.errormessage}>
+                  <div
+                    className={styles.errormessage}
+                    data-testid="mailAddressError"
+                  >
                     {errormessage.mailAddress}
                   </div>
                 </div>
@@ -245,7 +272,10 @@ export default function CreateUser() {
                       onChange={(e) => setGender(e.target.value)}
                     />
                   </div>
-                  <div className={styles.errormessage}>
+                  <div
+                    className={styles.errormessage}
+                    data-testid="genderError"
+                  >
                     {errormessage.gender}
                   </div>
                 </div>
@@ -257,9 +287,10 @@ export default function CreateUser() {
                       value={birth}
                       onChange={(e) => setBirth(e.target.value)}
                       className={styles.input}
+                      placeholder="birth"
                     />
                   </div>
-                  <div className={styles.errormessage}>
+                  <div className={styles.errormessage} data-testid="birthError">
                     {errormessage.birth}
                   </div>
                 </div>
@@ -278,7 +309,9 @@ export default function CreateUser() {
                       <option value="daily">09:00~18:00</option>
                     </select>
                   </div>
-                  <div className={styles.errormessage}>{errormessage.plan}</div>
+                  <div className={styles.errormessage} data-testid="planError">
+                    {errormessage.plan}
+                  </div>
                 </div>
                 <div className={styles.label}>
                   入会日(例:1999/01/01)
@@ -290,14 +323,21 @@ export default function CreateUser() {
                       className={styles.input}
                     />
                   </div>
-                  <div className={styles.errormessage}>
+                  <div
+                    className={styles.errormessage}
+                    data-testid="startDateError"
+                  >
                     {errormessage.startDate}
                   </div>
                 </div>
               </div>
             </div>
             <div className={styles.button}>
-              <button type="submit" className={styles.submit}>
+              <button
+                type="submit"
+                className={styles.submit}
+                data-testid="submit"
+              >
                 会員登録
               </button>
             </div>
