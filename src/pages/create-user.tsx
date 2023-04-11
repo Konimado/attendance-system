@@ -24,7 +24,7 @@ import Index from ".";
 // };
 
 export default function CreateUser() {
-  // const router = useRouter();
+  const router = useRouter();
   const [name, setName] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [address, setAddress] = useState("");

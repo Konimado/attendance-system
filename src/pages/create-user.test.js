@@ -1,14 +1,13 @@
 import "@testing-library/jest-dom";
 import CreateUser from "./create-user";
-import { Router } from "react-router-dom";
 
 import { render, screen, waitFor, cleanup } from "@testing-library/react";
 
 import userEvent from "@testing-library/user-event";
 
-// jest.mock("next/router", () => ({
-//   useRouter: jest.fn(),
-// }));
+jest.mock("next/router", () => ({
+  useRouter: jest.fn(),
+}));
 
 // describe("create-user", () => {
 //   it("render", () => {
