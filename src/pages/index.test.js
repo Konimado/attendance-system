@@ -22,8 +22,8 @@ const server = setupServer(
       ctx.json([
         {
           name: "太郎",
-          enterTime: "2023-04-07T01:55:50.528Z",
-          exitTime: "2023-04-07T01:55:50.528Z",
+          enterTime: "2023-04-12T01:55:50.528Z",
+          exitTime: "2023-04-12T01:58:50.528Z",
         },
       ])
     );
@@ -52,12 +52,9 @@ describe("Rendering", () => {
     const { newCharacter, addButton, getCharacters } = renderOfficeCharacters();
 
     const pam = "太郎";
-
-    // verify pam is NOT in the initial list
-    await waitFor(() => {
-      expect(
-        getCharacters().find((character) => character.name === pam)
-      ).toBeTruthy();
-    });
+    await waitFor(() => screen.getByTestId("character"));
+    expect(
+      getCharacters().find((character) => character.name === pam)
+    ).toBeTruthy();
   });
 });
