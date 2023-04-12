@@ -162,9 +162,6 @@ export default function CreateUser() {
   return (
     <>
       <Layout>
-        <Link href="/">
-          <button data-testid="home1">home1</button>
-        </Link>
         <div className={styles.contents}>
           <form onSubmit={CreateUser}>
             <div>
