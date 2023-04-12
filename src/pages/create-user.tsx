@@ -24,7 +24,7 @@ import Index from ".";
 // };
 
 export default function CreateUser() {
-  const router = useRouter();
+  // const router = useRouter();
   const [name, setName] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [address, setAddress] = useState("");
@@ -162,6 +162,9 @@ export default function CreateUser() {
   return (
     <>
       <Layout>
+        <Link href="/">
+          <button data-testid="home1">home1</button>
+        </Link>
         <div className={styles.contents}>
           <form onSubmit={CreateUser}>
             <div>
