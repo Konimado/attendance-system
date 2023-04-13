@@ -14,17 +14,9 @@ import styles from "../style/create-user.module.scss";
 import { useRouter } from "next/router";
 import Layout from "@/components/Layout";
 import Link from "next/link";
-// import { Link, Route, Routes, useLocation } from "react-router-dom";
-import Index from ".";
-
-// export const LocationDisplay = () => {
-//   // const location = useLocation();
-
-//   // return <div data-testid="location-display">{location.pathname}</div>;
-// };
 
 export default function CreateUser() {
-  // const router = useRouter();
+  const router = useRouter();
   const [name, setName] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [address, setAddress] = useState("");
@@ -75,11 +67,14 @@ export default function CreateUser() {
     });
     const error = checkvalidate();
     setErrormessage(error);
-
     let num = ("000" + Math.floor(Math.random() * 10000)).substr(-4, 4);
     const useRef = collection(db, "users");
+
     let q = query(useRef, where("id", "==", num));
+    console.log("step4");
+
     let querySnapshot = await getDocs(q);
+    console.log("step5");
 
     while (querySnapshot.docs.length !== 0) {
       console.log("while");
@@ -177,6 +172,7 @@ export default function CreateUser() {
                       value={name}
                       className={styles.input}
                       onChange={(e) => setName(e.target.value)}
+                      placeholder="name"
                     />
                   </div>
                   <div className={styles.errormessage} data-testid="nameError">
@@ -209,6 +205,7 @@ export default function CreateUser() {
                       className={styles.input}
                       cols={70}
                       rows={1}
+                      placeholder="address"
                     />
                   </div>
                   <div
@@ -257,7 +254,7 @@ export default function CreateUser() {
                 <div className={styles.label}>
                   性別
                   <div>
-                    男
+                    <label htmlFor="|">男</label>
                     <input
                       type="radio"
                       value="male"
@@ -295,7 +292,7 @@ export default function CreateUser() {
                   </div>
                 </div>
                 <div className={styles.label}>
-                  プラン
+                  <label htmlFor="|">プラン</label>
                   <div>
                     <select
                       value={plan}
