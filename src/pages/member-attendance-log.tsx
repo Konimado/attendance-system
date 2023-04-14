@@ -1,11 +1,13 @@
 import Layout from "@/components/Layout";
 import { getDocs, collection, where, query } from "firebase/firestore";
 import { db } from "../firebase";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Fetchmemberattendance,
   Memberattendance,
 } from "@/types/member-attendance";
+import { getData, getUser } from "./api/eachMember-attendance_get";
+import axios from "axios";
 
 type tofetchmemberattendance = {
   enterTime?: any;
@@ -14,19 +16,18 @@ type tofetchmemberattendance = {
   date: any;
   week: string;
 };
-export const getServerSideProps = async (id: { query: { id: number } }) => {
-  const user: Fetchmemberattendance[] = [];
-  const useRef = collection(db, "users-attendance");
-  const q = query(useRef, where("id", "==", `${id.query.id}`));
-  const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((doc) => {
-    user.push(doc.data());
-  });
+export const getServerSideProps = async (context: {
+  query: { id: number };
+}) => {
+  console.log("aaa");
+  const user = await getUser(context.query.id);
+  // const user = await getUser(2349);
 
-  user.map((u) => {
-    u.enterTime = u.enterTime.toDate();
-    u.exitTime = u.exitTime.toDate();
-  });
+  // const user = axios.get("/api/eachMember-attendance_get").then((res) => {
+  //   console.log("SSR", res.data);
+  //   return res.data;
+  // });
+  console.log(user);
 
   return {
     props: {
@@ -37,6 +38,17 @@ export const getServerSideProps = async (id: { query: { id: number } }) => {
 };
 
 export default function MemberAttendanceLog({ data }: { data: string }) {
+  // useEffect(() => {
+  //   axios
+  //     .get("/api/eachMember-attendance_get")
+  //     .then((res) => {
+  //       console.log("axios", res.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
+
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState<number>(new Date().getFullYear());
   if (!data) return;
