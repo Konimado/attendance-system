@@ -10,6 +10,8 @@ import Index from "./index";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 
+jest.unmock("../__mocks__/react-firebase-hooks/auth");
+
 // jest.mock("axios");
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),

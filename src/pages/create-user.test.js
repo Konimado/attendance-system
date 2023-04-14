@@ -12,6 +12,8 @@ import {
 
 import userEvent from "@testing-library/user-event";
 
+jest.unmock("../__mocks__/react-firebase-hooks/auth");
+
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
