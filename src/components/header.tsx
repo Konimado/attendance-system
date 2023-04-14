@@ -7,7 +7,9 @@ import { signOut } from "firebase/auth";
 
 export default function Header() {
   //ログイン状態の確認
+  // const [user] = useAuthState(auth);
   const [user] = useAuthState(auth);
+  console.log(user);
   //ボタンクリック
   const buttonSignOut = function () {
     signOut(auth)
@@ -31,33 +33,33 @@ export default function Header() {
         </Link>
         <nav className="nav">
           <ul className={header.nav__wrapper}>
-            {/* {user ? ( */}
-            <>
-              <li className={header.nav__item}>
-                <Link href="/create-user" data-testid="create-user-nav">
-                  会員登録
-                </Link>
-              </li>
-              <li className={header.nav__item}>
-                <Link href="/member-attendance">会員打刻</Link>
-              </li>
-              <li className={header.nav__item}>
-                <Link href="/member-list">会員一覧</Link>
-              </li>
-              <li className={header.nav__item}>
-                <Link href="/graph-management">グラフ管理</Link>
-              </li>
-              <li className={header.nav__item}>
-                <Link href="/" onClick={buttonSignOut}>
-                  ログアウト
-                </Link>
-              </li>
-            </>
-            {/* ) : (
+            {user ? (
+              <>
+                <li className={header.nav__item}>
+                  <Link href="/create-user" data-testid="create-user-nav">
+                    会員登録
+                  </Link>
+                </li>
+                <li className={header.nav__item}>
+                  <Link href="/member-attendance">会員打刻</Link>
+                </li>
+                <li className={header.nav__item}>
+                  <Link href="/member-list">会員一覧</Link>
+                </li>
+                <li className={header.nav__item}>
+                  <Link href="/graph-management">グラフ管理</Link>
+                </li>
+                <li className={header.nav__item}>
+                  <Link href="/" onClick={buttonSignOut}>
+                    ログアウト
+                  </Link>
+                </li>
+              </>
+            ) : (
               <li className={header.nav__item}>
                 <Link href="/owners-login">ログイン</Link>
               </li>
-            )} */}
+            )}
           </ul>
         </nav>
       </div>
