@@ -22,18 +22,18 @@ export async function getData(keyword: number) {
   return user;
 }
 
-export const getUser = async (id) => {
-  return await fetch(`https://example.com/user?userId=${id}`, {
-    method: "GET",
-  });
-};
+// export const getUser = async (id) => {
+//   return await fetch(`https://example.com/user?userId=${id}`, {
+//     method: "GET",
+//   });
+// };
 
 // Next.jsのAPI定義
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<any>
-) {
-  const data = await getData();
+// export default async function handler(
+//   req: NextApiRequest,
+//   res: NextApiResponse<any>
+// ) {
+//   const data = await getData();
 
-  res.status(200).json(data);
-}
+//   res.status(200).json(data);
+// }

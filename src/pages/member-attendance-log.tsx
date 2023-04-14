@@ -20,7 +20,7 @@ export const getServerSideProps = async (context: {
   query: { id: number };
 }) => {
   console.log("aaa");
-  const user = await getUser(context.query.id);
+  const user = await getData(context.query.id);
   // const user = await getUser(2349);
 
   // const user = axios.get("/api/eachMember-attendance_get").then((res) => {
