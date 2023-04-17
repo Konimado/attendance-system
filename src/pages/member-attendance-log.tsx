@@ -6,7 +6,7 @@ import {
   Fetchmemberattendance,
   Memberattendance,
 } from "@/types/member-attendance";
-import { getData, getUser } from "./api/eachMember-attendance_get";
+import { getData } from "./api/eachMember-attendance_get";
 import axios from "axios";
 
 type tofetchmemberattendance = {
@@ -21,13 +21,13 @@ export const getServerSideProps = async (context: {
 }) => {
   console.log("aaa");
   const user = await getData(context.query.id);
+
   // const user = await getUser(2349);
 
   // const user = axios.get("/api/eachMember-attendance_get").then((res) => {
   //   console.log("SSR", res.data);
   //   return res.data;
   // });
-  console.log(user);
 
   return {
     props: {
@@ -155,7 +155,7 @@ export default function MemberAttendanceLog({ data }: { data: string }) {
               <td>曜日</td>
               <td>入場</td>
               <td>退場</td>
-              <td>滞在時間</td>
+              <td data-testid="error">滞在時間</td>
             </tr>
           </thead>
           <tbody>
