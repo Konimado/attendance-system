@@ -6,21 +6,26 @@ import Layout from "@/components/Layout";
 import { Users } from "@/types/user";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-export default function App() {
+export default function GraphGender() {
   let genderItem = [0, 0];
   const [genderItems, setGenderItems] = useState([0, 0]);
+  const [dataexist, setDataexist] = useState(false);
 
   useEffect(() => {
     axios.get("/api/user_get").then((response) => {
-      const userdata = response.data;
-      userdata.map((item: Users) => {
-        if (item.gender === "male") {
-          return (genderItem = [genderItem[0] + 1, genderItem[1]]);
-        } else {
-          return (genderItem = [genderItem[0], genderItem[1] + 1]);
-        }
-      });
-      setGenderItems(genderItem);
+      if (response.data.length != 0) {
+        const userdata = response.data;
+        setDataexist(true);
+        console.log(userdata);
+        userdata.map((item: Users) => {
+          if (item.gender === "male") {
+            return (genderItem = [genderItem[0] + 1, genderItem[1]]);
+          } else {
+            return (genderItem = [genderItem[0], genderItem[1] + 1]);
+          }
+        });
+        setGenderItems(genderItem);
+      } else console.log("エラー");
     });
   }, []);
 
@@ -40,7 +45,14 @@ export default function App() {
   return (
     <Layout>
       <h2>graph-gender</h2>
-      <Pie data={data} />
+      {dataexist ? (
+        <div>
+          <h2 data-testid="gender">計測結果(男女別)</h2>
+          <Pie data={data} />
+        </div>
+      ) : (
+        <p data-testid="no">データを取得できません。</p>
+      )}
     </Layout>
   );
 }

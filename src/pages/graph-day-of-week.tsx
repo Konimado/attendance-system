@@ -13,7 +13,6 @@ import Layout from "@/components/Layout";
 import axios from "axios";
 import { Memberattendance } from "@/types/member-attendance";
 
-
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -23,37 +22,42 @@ ChartJS.register(
   Legend
 );
 
-export default function App() {
+export default function GraphDayWeek() {
+  const [dataexist, setDataexist] = useState(false);
+
   const [timesdeta, setTimesdeta] = useState<number[]>([]);
   useEffect(() => {
     axios.get("/api/member_attendance_get").then((res) => {
       console.log(res.data);
-      const datam:Memberattendance[] = res.data;
+      if (res.data.length != 0) {
+        const datam: Memberattendance[] = res.data;
+        setDataexist(true);
+        let daydeta = {
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 0,
+          "7": 0,
+        };
 
-      let daydeta = {
-        "1": 0,
-        "2": 0,
-        "3": 0,
-        "4": 0,
-        "5": 0,
-        "6": 0,
-        "7": 0
-      };
+        console.log(new Date().getDay());
+        for (let key of datam) {
+          (daydeta as any)[new Date(key.enterTime).getDay()] = datam.filter(
+            (x) =>
+              new Date(x.enterTime).getDay() ===
+              new Date(key.enterTime).getDay()
+          ).length;
+        }
 
-      console.log(new Date().getDay())
-      for (let key of datam) {
-        (daydeta as any)[new Date(key.enterTime).getDay()] = datam.filter(
-          (x) =>
-            new Date(x.enterTime).getDay() ===
-            new Date(key.enterTime).getDay()
-        ).length;
+        setTimesdeta(Object.values(daydeta));
+      } else {
+        console.log("エラー");
       }
-  
-      setTimesdeta(Object.values(daydeta));
     });
   }, []);
 
- 
   const options = {
     responsive: true,
     plugins: {
@@ -67,15 +71,7 @@ export default function App() {
     },
   };
 
-  const labels = [
-    "月",
-    "火",
-    "水",
-    "木",
-    "金",
-    "土",
-    "日",
-  ];
+  const labels = ["月", "火", "水", "木", "金", "土", "日"];
 
   const data = {
     labels,
@@ -90,7 +86,14 @@ export default function App() {
   return (
     <Layout>
       <h2>graph-day-of-week</h2>
-      <Bar options={options} data={data} />
+      {dataexist ? (
+        <div>
+          <h2 data-testid="weekday">計測結果(曜日別)</h2>
+          <Bar options={options} data={data} />
+        </div>
+      ) : (
+        <div data-testid="no">データを取得できません。</div>
+      )}
     </Layout>
   );
 }

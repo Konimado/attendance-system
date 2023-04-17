@@ -23,78 +23,92 @@ ChartJS.register(
   Legend
 );
 
-export default function App() {
+export default function GraphTime() {
   const [timesdeta, setTimesdeta] = useState<number[]>([]);
+  const [dataexist, setDataexist] = useState(false);
+
   useEffect(() => {
     axios.get("/api/member_attendance_get").then((res) => {
-      const datam = res.data;
-      //  console.log("datam",datam.enterTime)
-      console.log("datam", datam);
+      if (res.data.length != 0) {
+        const datam = [
+          {
+            enterTime: "2023-04-10T05:19:08.096Z",
+            id: "3762",
+            exitTime: "2023-04-10T05:21:47.639Z",
+          },
+        ];
+        setDataexist(true);
+        //  console.log("datam",datam.enterTime)
+        console.log("datam", datam);
 
-      type Timedeta = {
-        "1": number;
-        "2": number;
-        "3": number;
-        "4": number;
-        "5": number;
-        "6": number;
-        "7": number;
-        "8": number;
-        "9": number;
-        "10": number;
-        "11": number;
-        "12": number;
+        type Timedeta = {
+          "1": number;
+          "2": number;
+          "3": number;
+          "4": number;
+          "5": number;
+          "6": number;
+          "7": number;
+          "8": number;
+          "9": number;
+          "10": number;
+          "11": number;
+          "12": number;
 
-        "13": number;
-        "14": number;
-        "15": number;
-        "16": number;
-        "17": number;
-        "18": number;
-        "19": number;
-        "20": number;
-        "21": number;
-        "22": number;
-        "23": number;
-        "24": number;
-      };
-      let timedeta = {
-        "1": 0,
-        "2": 0,
-        "3": 0,
-        "4": 0,
-        "5": 0,
-        "6": 0,
-        "7": 0,
-        "8": 0,
-        "9": 0,
-        "10": 0,
-        "11": 0,
-        "12": 0,
-        "13": 0,
-        "14": 0,
-        "15": 0,
-        "16": 0,
-        "17": 0,
-        "18": 0,
-        "19": 0,
-        "20": 0,
-        "21": 0,
-        "22": 0,
-        "23": 0,
-        "24": 0,
-      } as Timedeta;
+          "13": number;
+          "14": number;
+          "15": number;
+          "16": number;
+          "17": number;
+          "18": number;
+          "19": number;
+          "20": number;
+          "21": number;
+          "22": number;
+          "23": number;
+          "24": number;
+        };
+        let timedeta = {
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 0,
+          "7": 0,
+          "8": 0,
+          "9": 0,
+          "10": 0,
+          "11": 0,
+          "12": 0,
+          "13": 0,
+          "14": 0,
+          "15": 0,
+          "16": 0,
+          "17": 0,
+          "18": 0,
+          "19": 0,
+          "20": 0,
+          "21": 0,
+          "22": 0,
+          "23": 0,
+          "24": 0,
+        } as Timedeta;
 
-      for (let keys of datam) {
-        (timedeta as any)[new Date(keys.enterTime).getHours() as keyof string] =
-          datam.filter(
+        for (let keys of datam) {
+          (timedeta as any)[
+            new Date(keys.enterTime).getHours() as keyof string
+          ] = datam.filter(
             (x: Memberattendance) =>
               new Date(x.enterTime).getHours() ===
               new Date(keys.enterTime).getHours()
           ).length;
+        }
+
+        setTimesdeta(Object.values(timedeta));
+      } else {
+        console.log("エラー");
       }
-      console.log;
-      setTimesdeta(Object.values(timedeta));
     });
   }, []);
 
@@ -149,7 +163,15 @@ export default function App() {
   return (
     <Layout>
       <h2>graph-time</h2>
-      <Bar options={options} data={data} />
+      {dataexist ? (
+        <div>
+          <h2 data-testid="time">計測結果(時間別)</h2>
+
+          <Bar options={options} data={data} />
+        </div>
+      ) : (
+        <p data-testid="no">データを取得できません。</p>
+      )}
     </Layout>
   );
 }
