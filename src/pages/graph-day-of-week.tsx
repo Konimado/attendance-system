@@ -89,6 +89,7 @@ export default function App() {
   };
   return (
     <Layout>
+      <h2>graph-day-of-week</h2>
       <Bar options={options} data={data} />
     </Layout>
   );

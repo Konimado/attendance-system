@@ -1,62 +1,88 @@
-import React from "react";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { Line } from "react-chartjs-2";
+import Layout from "@/components/Layout";
+import Image from "next/image";
+import Link from "next/link";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-export default function GraphManagement() {
-  const options = {
-    responsive: true,
-    plugins: {
-      title: {
-        display: true,
-        text: "グラフタイトル",
-      },
-    },
-  };
-
-  const labels = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-  ];
-
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: "データ1",
-        data: [10, 40, 30, 40, 50, 80, 150],
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
-      },
-    ],
-  };
-
+export default function GraphList() {
   return (
-    <>
-      <Line options={options} data={data} />
-    </>
+    <Layout>
+      <div style={{ marginBottom: "40px", marginTop: "10px" }}>グラフ一覧</div>
+      <div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <div>
+            <Link href={"/graph-age"}>
+              <div data-testid="graph-age-nav">年齢別会員数</div>
+              <div>
+                <Image
+                  src={"/images/graph/age.png"}
+                  alt="画像"
+                  width={400}
+                  height={200}
+                />
+              </div>
+            </Link>
+          </div>
+          <div>
+            <Link rel="stylesheet" href={"/graph-time"}>
+              <div data-testid="graph-time-nav">時間別会員数</div>
+              <div>
+                <Image
+                  src={"/images/graph/time.png"}
+                  alt="画像"
+                  width={400}
+                  height={200}
+                />
+              </div>
+            </Link>
+          </div>
+          <div>
+            <Link href={"/graph-day-of-week"}>
+              <div data-testid="graph-day-of-week-nav">曜日別会員数</div>
+              <div>
+                <Image
+                  src={"/images/graph/day.png"}
+                  alt="画像"
+                  width={400}
+                  height={200}
+                />
+              </div>
+            </Link>
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "20px",
+          }}
+        >
+          <div>
+            <Link href={"/graph-gender"}>
+              <div data-testid="graph-gender-nav">会員男女比</div>
+              <div>
+                <Image
+                  src={"/images/graph/gender.png"}
+                  alt="画像"
+                  width={300}
+                  height={300}
+                />
+              </div>
+            </Link>
+          </div>
+          <div>
+            <Link href={"/graph-plan"}>
+              <div data-testid="graph-plan-nav">会員プラン比</div>
+              <div>
+                <Image
+                  src={"/images/graph/plan.png"}
+                  alt="画像"
+                  width={300}
+                  height={300}
+                />
+              </div>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </Layout>
   );
 }

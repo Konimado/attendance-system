@@ -148,6 +148,7 @@ export default function App() {
   };
   return (
     <Layout>
+      <h2>graph-time</h2>
       <Bar options={options} data={data} />
     </Layout>
   );

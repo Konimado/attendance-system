@@ -39,6 +39,7 @@ export default function App() {
 
   return (
     <Layout>
+      <h2>graph-gender</h2>
       <Pie data={data} />
     </Layout>
   );
