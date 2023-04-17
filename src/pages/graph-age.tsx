@@ -145,6 +145,7 @@ export default function ChartBar() {
   return (
     <>
       <Layout>
+        <h2>graph-age</h2>
         <Bar options={options} data={data} />
       </Layout>
     </>
