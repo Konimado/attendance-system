@@ -50,53 +50,58 @@ ChartJS.register(
 //   ],
 // };
 
-export default function ChartBar() {
+export default function GraphAge() {
+  const [dataexist, setDataexist] = useState(false);
   const [age, setAge] = useState<number[]>([]);
 
   useEffect(() => {
     axios.get("/api/user_get").then((response) => {
-      const userdata: UsersAddAge[] = response.data;
+      if (response.data.length != 0) {
+        const userdata: UsersAddAge[] = response.data;
+        setDataexist(true);
+        userdata.map((item) => {
+          const birthday = {
+            year: new Date(item.birth).getFullYear(),
+            month: new Date(item.birth).getMonth() + 1,
+            date: new Date(item.birth).getDate(),
+          };
+          //今年の誕生日
+          const thisYearsBirthday = new Date(
+            today.getFullYear(),
+            birthday.month - 1,
+            birthday.date
+          );
+          //年齢
+          let age: number = today.getFullYear() - birthday.year;
+          if (today < thisYearsBirthday) {
+            //今年まだ誕生日が来ていない
+            age--;
+          }
+          item.age = age;
+        });
 
-      userdata.map((item) => {
-        const birthday = {
-          year: new Date(item.birth).getFullYear(),
-          month: new Date(item.birth).getMonth() + 1,
-          date: new Date(item.birth).getDate(),
+        let agedata = {
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 0,
+          "7": 0,
+          "8": 0,
+          "9": 0,
         };
-        //今年の誕生日
-        const thisYearsBirthday = new Date(
-          today.getFullYear(),
-          birthday.month - 1,
-          birthday.date
-        );
-        //年齢
-        let age: number = today.getFullYear() - birthday.year;
-        if (today < thisYearsBirthday) {
-          //今年まだ誕生日が来ていない
-          age--;
+
+        for (let key of userdata) {
+          (agedata as any)[Math.floor(key.age / 10)] = userdata.filter(
+            (x) => Math.floor(x.age / 10) === Math.floor(key.age / 10)
+          ).length;
         }
-        item.age = age;
-      });
-
-      let agedata = {
-        "1": 0,
-        "2": 0,
-        "3": 0,
-        "4": 0,
-        "5": 0,
-        "6": 0,
-        "7": 0,
-        "8": 0,
-        "9": 0,
-      };
-
-      for (let key of userdata) {
-        (agedata as any)[Math.floor(key.age / 10)] = userdata.filter(
-          (x) => Math.floor(x.age / 10) === Math.floor(key.age / 10)
-        ).length;
+        setAge(Object.values(agedata));
+        console.log(Object.values(agedata));
+      } else {
+        console.log("エラー");
       }
-      setAge(Object.values(agedata));
-      console.log(Object.values(agedata));
     });
     //warningを解消する為,ESLintのルールを無効
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -146,7 +151,14 @@ export default function ChartBar() {
     <>
       <Layout>
         <h2>graph-age</h2>
-        <Bar options={options} data={data} />
+        {dataexist ? (
+          <div>
+            <h2 data-testid="age">計測結果(年齢別)</h2>
+            <Bar options={options} data={data} />
+          </div>
+        ) : (
+          <div data-testid="no">データを取得できません。</div>
+        )}
       </Layout>
     </>
   );
