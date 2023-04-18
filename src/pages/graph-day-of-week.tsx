@@ -28,7 +28,6 @@ export default function GraphDayWeek() {
   const [timesdeta, setTimesdeta] = useState<number[]>([]);
   useEffect(() => {
     axios.get("/api/member_attendance_get").then((res) => {
-      console.log(res.data);
       if (res.data.length != 0) {
         const datam: Memberattendance[] = res.data;
         setDataexist(true);
@@ -42,7 +41,6 @@ export default function GraphDayWeek() {
           "7": 0,
         };
 
-        console.log(new Date().getDay());
         for (let key of datam) {
           (daydeta as any)[new Date(key.enterTime).getDay()] = datam.filter(
             (x) =>

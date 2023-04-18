@@ -38,8 +38,6 @@ export default function GraphTime() {
           },
         ];
         setDataexist(true);
-        //  console.log("datam",datam.enterTime)
-        console.log("datam", datam);
 
         type Timedeta = {
           "1": number;
