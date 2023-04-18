@@ -1,28 +1,23 @@
 import Layout from "@/components/Layout";
-
-import { useEffect, useState } from "react";
-import {
-  Fetchmemberattendance,
-  Memberattendance,
-} from "@/types/member-attendance";
+import { useState } from "react";
+import { Memberattendance } from "@/types/member-attendance";
 import { getData } from "./api/eachMember-attendance_get";
+import axios from "axios";
 
-type tofetchmemberattendance = {
-  enterTime?: any;
-  exitTime?: any;
-  id?: number;
-  date: any;
-  week: string;
-};
 export const getServerSideProps = async (context: {
   query: { id: number };
 }) => {
+  //パターン1:関数で取得する
   const user = await getData(context.query.id);
 
-  // const user = axios.get("/api/eachMember-attendance_get").then((res) => {
-  //   console.log("SSR", res.data);
-  //   return res.data;
-  // });
+  //パターン2:axiosで取得する。
+  // const user = await axios
+  //   .post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/eachMember-attendance_get`, {
+  //     id: context.query.id,
+  //   })
+  //   .then((res) => {
+  //     return res.data;
+  //   });
 
   return {
     props: {
@@ -61,7 +56,7 @@ export default function MemberAttendanceLog({ data }: { data: string }) {
     date.push({ day: `${month}/${i}`, date: i, weeks: weeks });
   }
 
-  let datefinish: tofetchmemberattendance[] = [];
+  let datefinish: Memberattendance[] = [];
   date.map((d) => {
     const filterdam = datam.filter((dm) => {
       return dm.date === d.day;

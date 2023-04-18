@@ -13,12 +13,10 @@ export default function GraphPlan() {
 
   useEffect(() => {
     axios.get("/api/user_get").then((response) => {
-      console.log("aaa", response.data);
       if (response.data.length != 0) {
         const userdata = response.data;
         setDataexist(true);
         userdata.map((item: Users) => {
-          // console.log(item.plan);
           if (item.plan === "all") {
             return (planItem = [
               planItem[0] + 1,

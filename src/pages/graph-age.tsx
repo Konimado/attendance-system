@@ -98,7 +98,6 @@ export default function GraphAge() {
           ).length;
         }
         setAge(Object.values(agedata));
-        console.log(Object.values(agedata));
       } else {
         console.log("エラー");
       }

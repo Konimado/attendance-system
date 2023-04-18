@@ -42,6 +42,5 @@ it("getserversideprops ", async () => {
 
 it("render time", () => {
   render(<MemberAttendanceLog data={JSON.stringify(res)} />);
-  // screen.debug();
   expect(screen.getByText("13:31")).toBeInTheDocument();
 });
