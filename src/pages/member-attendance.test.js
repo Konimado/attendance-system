@@ -6,7 +6,7 @@ import { rest } from "msw";
 import userEvent from "@testing-library/user-event";
 import { wait } from "@testing-library/user-event";
 
-jest.unmock("../__mocks__/react-firebase-hooks/auth");
+// jest.unmock("../__mocks__/react-firebase-hooks/auth");
 
 // jest.setTimeout(10000);
 const server = setupServer(
