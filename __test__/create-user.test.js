@@ -1,13 +1,9 @@
 import "@testing-library/jest-dom";
 import CreateUser from "../src/pages/create-user";
-import { getPage } from "next-page-tester";
 import { initTestHelpers } from "next-page-tester";
 import {
   render,
   screen,
-  waitFor,
-  cleanup,
-  getByTestId,
 } from "@testing-library/react";
 
 import userEvent from "@testing-library/user-event";
