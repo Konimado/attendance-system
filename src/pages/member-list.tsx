@@ -246,9 +246,9 @@ export default function MemberList({ users }: { users: string }) {
                     onChange={(e) => ageChange(e)}
                   >
                     <option value="0">▼</option>
-                    {newArr.map((item) => {
+                    {newArr.map((item,index) => {
                       return (
-                        <option value={item / 10} key={item}>
+                        <option value={item / 10} key={index}>
                           {item}代
                         </option>
                       );
@@ -277,9 +277,9 @@ export default function MemberList({ users }: { users: string }) {
                     onChange={(e) => startDateChange(e)}
                   >
                     <option value="0">▼</option>
-                    {newStartDateItem.map((item) => {
+                    {newStartDateItem.map((item,index) => {
                       return (
-                        <option value={item} key={item}>
+                        <option value={item} key={index}>
                           {item}
                         </option>
                       );
@@ -407,7 +407,6 @@ export async function getStaticProps() {
   //   const userdata = doc.data();
   //   users.push(userdata);
   // });
-  console.log("usersItem",usersItem)
   return {
     props: {
       users: JSON.stringify(usersItem),
