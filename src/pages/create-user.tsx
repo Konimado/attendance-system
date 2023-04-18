@@ -71,13 +71,10 @@ export default function CreateUser() {
     const useRef = collection(db, "users");
 
     let q = query(useRef, where("id", "==", num));
-    console.log("step4");
 
     let querySnapshot = await getDocs(q);
-    console.log("step5");
 
     while (querySnapshot.docs.length !== 0) {
-      console.log("while");
       num = ("000" + Math.floor(Math.random() * 10000)).substr(-4, 4);
       q = query(useRef, where("id", "==", num));
       querySnapshot = await getDocs(q);

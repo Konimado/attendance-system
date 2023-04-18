@@ -16,7 +16,6 @@ export default function GraphGender() {
       if (response.data.length != 0) {
         const userdata = response.data;
         setDataexist(true);
-        console.log(userdata);
         userdata.map((item: Users) => {
           if (item.gender === "male") {
             return (genderItem = [genderItem[0] + 1, genderItem[1]]);

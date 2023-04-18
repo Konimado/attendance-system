@@ -11,8 +11,6 @@ import {
 import { Bar } from "react-chartjs-2";
 import Layout from "@/components/Layout";
 import axios from "axios";
-import { time } from "console";
-import { Memberattendance } from "@/types/member-attendance";
 
 ChartJS.register(
   CategoryScale,
@@ -97,7 +95,7 @@ export default function GraphTime() {
           (timedeta as any)[
             new Date(keys.enterTime).getHours() as keyof string
           ] = datam.filter(
-            (x: Memberattendance) =>
+            (x) =>
               new Date(x.enterTime).getHours() ===
               new Date(keys.enterTime).getHours()
           ).length;

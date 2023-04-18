@@ -14,9 +14,6 @@ const getAirportAPI = async (_req: NextApiRequest, res: NextApiResponse) => {
   });
   
   user.map((user)=>{
-    console.log(typeof user.enterTime.toString())
-    console.log( user.enterTime.toString())
-
     user.enterTime = (user.enterTime).toDate();
     user.exitTime = user.exitTime.toDate();
   })
