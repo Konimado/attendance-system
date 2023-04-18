@@ -1,7 +1,7 @@
 import { getDocs, collection, DocumentData } from "firebase/firestore";
 import { db } from "../firebase";
 import memberList from "../style/member-list.module.scss";
-import Layout from "../components/Layout";
+import Layout from "../components/layout";
 import Link from "next/link";
 import { useState } from "react";
 import { fetchUsers } from "../types/fetchUsers";

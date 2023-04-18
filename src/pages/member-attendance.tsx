@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "../style/user-attendance.module.scss";
-import Layout from "@/components/Layout";
+import Layout from "@/components/layout";
 import Times from "@/function/time";
 import axios from "axios";
 
