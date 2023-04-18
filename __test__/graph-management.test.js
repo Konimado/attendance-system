@@ -8,7 +8,7 @@ import { initTestHelpers } from "next-page-tester"; // 初期設定を行うも�
  * @jest-environment jsdom
  */
 
-jest.unmock("../__mocks__ /react-firebase-hooks/auth.js");
+jest.unmock("../src/__mocks__/react-firebase-hooks/auth");
 
 initTestHelpers();
 

@@ -8,8 +8,8 @@ import { render, screen } from "@testing-library/react";
 
 import MemberAttendanceLog, {
   getServerSideProps,
-} from "./member-attendance-log";
-
+} from "../src/pages/member-attendance-log";
+jest.unmock("../src/__mocks__/react-firebase-hooks/auth");
 initTestHelpers();
 const res = [
   {
@@ -23,8 +23,8 @@ const res = [
     enterTime: "2023-04-17T10:05:37.621Z",
   },
 ];
-jest.mock("./api/eachMember-attendance_get", () => {
-  const originalModule = jest.requireActual("./api/eachMember-attendance_get");
+jest.mock("../src/pages/api/eachMember-attendance_get", () => {
+  const originalModule = jest.requireActual("../src/pages/api/eachMember-attendance_get");
 
   //Mock the default export and named export 'foo'
   return {
