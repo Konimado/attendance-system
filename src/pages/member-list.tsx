@@ -5,6 +5,7 @@ import Layout from "../components/Layout";
 import Link from "next/link";
 import { useState } from "react";
 import { fetchUsers } from "../types/fetchUsers";
+import { getMemberList } from "./api/member_list_get";
 
 type UsersItem = {
   address: string;
@@ -400,12 +401,16 @@ export default function MemberList({ users }: { users: string }) {
 
 export async function getStaticProps() {
   let users: fetchUsers[] = [];
-  const usersItem = await getDocs(collection(db, "users"));
-  usersItem.forEach((doc) => {
-    const userdata = doc.data();
-    users.push(userdata);
-  });
+  const usersItem = await getMemberList();
+  // const usersItem = await getDocs(collection(db, "users"));
+  // usersItem.forEach((doc) => {
+  //   const userdata = doc.data();
+  //   users.push(userdata);
+  // });
+  console.log("usersItem",usersItem)
   return {
-    props: { users: JSON.stringify(users) },
+    props: {
+      users: JSON.stringify(usersItem),
+    },
   };
 }
