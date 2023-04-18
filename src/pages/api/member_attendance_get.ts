@@ -1,12 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
-import {fetchmemberattendance} from "@/types/member-attendance";
+import {Fetchmemberattendance} from "@/types/member-attendance";
 
 const getAirportAPI = async (_req: NextApiRequest, res: NextApiResponse) => {
   const querySnapshot = await getDocs(collection(db, "users-attendance"));
 
-  const user:fetchmemberattendance[]= [];
+  const user:Fetchmemberattendance[]= [];
   querySnapshot.forEach((doc) => {
     const userdata = doc.data();
    
