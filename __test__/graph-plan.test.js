@@ -2,21 +2,13 @@ import { setupServer } from "msw/node";
 import { render, screen, waitFor, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { rest } from "msw";
-import GraphTime from "./graph-time";
-import axios from "axios";
+import GraphPlan from "../src/pages/graph-plan"
+
+jest.unmock("../src/__mocks__/react-firebase-hooks/auth");
 
 const server = setupServer(
-  rest.get("/api/member_attendance_get", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json([
-        {
-          enterTime: "2023-04-10T05:19:08.096Z",
-          id: "3762",
-          exitTime: "2023-04-10T05:21:47.639Z",
-        },
-      ])
-    );
+  rest.get("/api/user_get", (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json([{ plan: "daily" }, { plan: "all" }]));
   })
 );
 
@@ -29,21 +21,21 @@ afterEach(() => {
 afterAll(() => server.close());
 
 describe("graph-plan-render", () => {
-  // グラフ　時間別ページのデータ取得確認
+  // グラフ　プランページのデータ取得確認
   it("it render graph if deta exsit", async () => {
-    render(<GraphTime />);
-    await waitFor(() => screen.getByTestId("time"));
-    expect(screen.getByTestId("time")).toHaveTextContent("計測結果(時間別)");
+    render(<GraphPlan />);
+    await waitFor(() => screen.getByTestId("plan"));
+    expect(screen.getByTestId("plan")).toHaveTextContent("計測結果(プラン別)");
   });
 
-  // グラフ　時間別ページのデータ取得できなかった時
+  // グラフ　プランページのデータ取得できなかった時
   it("it render graph if no data", async () => {
     server.use(
-      rest.get("/api/member_attendance_get", (req, res, ctx) => {
+      rest.get("/api/user_get", (req, res, ctx) => {
         return res(ctx.status(200), ctx.json([]));
       })
     );
-    render(<GraphTime />);
+    render(<GraphPlan />);
     await waitFor(() => screen.getByTestId("no"));
     expect(screen.getByTestId("no")).toHaveTextContent(
       "データを取得できません。"

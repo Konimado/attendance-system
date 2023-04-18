@@ -4,7 +4,9 @@
 
 import { initTestHelpers } from "next-page-tester";
 import { render, screen } from "@testing-library/react";
-import MemberList, { getStaticProps } from "./member-list";
+import MemberList, { getStaticProps } from "../src/pages/member-list";
+
+jest.unmock("../src/__mocks__/react-firebase-hooks/auth");
 
 initTestHelpers();
 
@@ -41,8 +43,8 @@ const res = [
   },
 ];
 
-jest.mock("./api/member_list_get", () => {
-  const originalModule = jest.requireActual("./api/member_list_get");
+jest.mock("../src/pages/api/member_list_get", () => {
+  const originalModule = jest.requireActual("../src/pages/api/member_list_get");
   return {
     __esModule: false,
     ...originalModule,

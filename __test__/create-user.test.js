@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import CreateUser from "./create-user";
+import CreateUser from "../src/pages/create-user";
 import { getPage } from "next-page-tester";
 import { initTestHelpers } from "next-page-tester";
 import {
@@ -12,7 +12,7 @@ import {
 
 import userEvent from "@testing-library/user-event";
 
-jest.unmock("../__mocks__/react-firebase-hooks/auth");
+jest.unmock("../src/__mocks__/react-firebase-hooks/auth");
 
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),

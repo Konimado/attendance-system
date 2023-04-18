@@ -2,21 +2,13 @@ import { setupServer } from "msw/node";
 import { render, screen, waitFor, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { rest } from "msw";
-import GraphDayWeek from "./graph-day-of-week";
-import axios from "axios";
+import GraphAge from "../src/pages/graph-age";
+
+jest.unmock("../src/__mocks__/react-firebase-hooks/auth");
 
 const server = setupServer(
-  rest.get("/api/member_attendance_get", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json([
-        {
-          enterTime: "2023-04-10T05:19:08.096Z",
-          id: "3762",
-          exitTime: "2023-04-10T05:21:47.639Z",
-        },
-      ])
-    );
+  rest.get("/api/user_get", (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json([{ birth: "1994/01/06" }]));
   })
 );
 
@@ -29,21 +21,21 @@ afterEach(() => {
 afterAll(() => server.close());
 
 describe("graph-plan-render", () => {
-  // グラフ　時間別ページのデータ取得確認
+  // グラフ　年齢比ページのデータ取得確認
   it("it render graph if deta exsit", async () => {
-    render(<GraphDayWeek />);
-    await waitFor(() => screen.getByTestId("weekday"));
-    expect(screen.getByTestId("weekday")).toHaveTextContent("計測結果(曜日別)");
+    render(<GraphAge />);
+    await waitFor(() => screen.getByTestId("age"));
+    expect(screen.getByTestId("age")).toHaveTextContent("計測結果(年齢別)");
   });
 
-  // グラフ　時間別ページのデータ取得できなかった時
+  // グラフ　年齢比ページのデータ取得できなかった時
   it("it render graph if no data", async () => {
     server.use(
-      rest.get("/api/member_attendance_get", (req, res, ctx) => {
+      rest.get("/api/user_get", (req, res, ctx) => {
         return res(ctx.status(200), ctx.json([]));
       })
     );
-    render(<GraphDayWeek />);
+    render(<GraphAge />);
     await waitFor(() => screen.getByTestId("no"));
     expect(screen.getByTestId("no")).toHaveTextContent(
       "データを取得できません。"

@@ -6,11 +6,11 @@ import {
   cleanup,
   within,
 } from "@testing-library/react";
-import Index from "./index";
+import Index from "../src/pages/index";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 
-jest.unmock("../__mocks__/react-firebase-hooks/auth");
+jest.unmock("../src/__mocks__/react-firebase-hooks/auth");
 
 // jest.mock("axios");
 jest.mock("next/router", () => ({
@@ -24,8 +24,8 @@ const server = setupServer(
       ctx.json([
         {
           name: "太郎",
-          enterTime: "2023-04-14T01:55:50.528Z",
-          exitTime: "2023-04-14T01:58:50.528Z",
+          enterTime: "2023-04-18T01:55:50.528Z",
+          exitTime: "2023-04-18T01:58:50.528Z",
         },
       ])
     );

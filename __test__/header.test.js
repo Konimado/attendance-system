@@ -1,7 +1,7 @@
-import Header from "../components/header";
+import Header from "../src/components/header";
 import { render } from "@testing-library/react";
-import { auth } from "../firebase";
-import { useAuthState } from "../__mocks__/react-firebase-hooks/auth";
+import { auth } from "../src/firebase";
+import { useAuthState } from "../src/__mocks__/react-firebase-hooks/auth";
 
 it("should be ", () => {
   useAuthState.mockReturnValue([true]);
