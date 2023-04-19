@@ -2,7 +2,7 @@ import React, { use, useEffect, useState } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import axios from "axios";
-import Layout from "@/components/layout";
+import Layout from "@/components/Layout";
 import { Users } from "@/types/user";
 
 ChartJS.register(ArcElement, Tooltip, Legend);

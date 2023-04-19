@@ -9,7 +9,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import Layout from "@/components/layout";
+import Layout from "@/components/Layout";
 import axios from "axios";
 
 ChartJS.register(

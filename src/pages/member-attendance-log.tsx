@@ -1,4 +1,4 @@
-import Layout from "@/components/layout";
+import Layout from "@/components/Layout";
 import { useState } from "react";
 import { Memberattendance } from "@/types/member-attendance";
 import { getData } from "./api/eachMember-attendance_get";

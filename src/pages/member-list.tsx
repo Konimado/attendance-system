@@ -1,7 +1,7 @@
 import { getDocs, collection, DocumentData } from "firebase/firestore";
 import { db } from "../firebase";
 import memberList from "../style/member-list.module.scss";
-import Layout from "../components/layout";
+import Layout from "../components/Layout";
 import Link from "next/link";
 import { useState } from "react";
 import { fetchUsers } from "../types/fetchUsers";
@@ -246,7 +246,7 @@ export default function MemberList({ users }: { users: string }) {
                     onChange={(e) => ageChange(e)}
                   >
                     <option value="0">▼</option>
-                    {newArr.map((item,index) => {
+                    {newArr.map((item, index) => {
                       return (
                         <option value={item / 10} key={index}>
                           {item}代
@@ -277,7 +277,7 @@ export default function MemberList({ users }: { users: string }) {
                     onChange={(e) => startDateChange(e)}
                   >
                     <option value="0">▼</option>
-                    {newStartDateItem.map((item,index) => {
+                    {newStartDateItem.map((item, index) => {
                       return (
                         <option value={item} key={index}>
                           {item}
