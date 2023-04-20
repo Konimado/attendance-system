@@ -24,8 +24,8 @@ const server = setupServer(
       ctx.json([
         {
           name: "太郎",
-          enterTime: "2023-04-18T01:55:50.528Z",
-          exitTime: "2023-04-18T01:58:50.528Z",
+          enterTime: new Date().toISOString(),
+          exitTime: new Date().toISOString(),
         },
       ])
     );

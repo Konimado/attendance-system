@@ -50,7 +50,7 @@ const Index = () => {
           <table>
             <thead>
               <tr>
-                <th>名前</th>
+                <th>名前あ</th>
                 <th>入場時間</th>
               </tr>
             </thead>
